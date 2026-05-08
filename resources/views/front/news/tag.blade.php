@@ -126,7 +126,7 @@
               </h3>
               <p class="fs-sm">{{ $article->excerpt }}</p>
               <div class="nav fs-sm gap-3">
-                <a class="nav-link fw-semibold p-0" href="#!">{{ __('article.by') }} {{ $article->user->name }}</a>
+                <a class="nav-link fw-semibold p-0" href="#!">{{ __('article.by') }} {{ $article->author ?? __('article.admin') }}</a>
                 <span class="text-body-secondary">{{ $article->created_at->diffForHumans() }}</span>
               </div>
             </article>

@@ -225,7 +225,7 @@
                                 {{ strtoupper(substr($article->author ?? 'A', 0, 1)) }}
                             </div>
                             <div>
-                                <p class="font-semibold text-[#111318] dark:text-white">{{ $article->user->name ?? __('article.admin') }}</p>
+                                <p class="font-semibold text-[#111318] dark:text-white">{{ $article->author ?? __('article.admin') }}</p>
                             </div>
                         </div>
                         <span class="text-gray-300 dark:text-gray-600">|</span>
