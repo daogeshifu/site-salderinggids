@@ -290,17 +290,37 @@
                 </article>
 
                 <!-- Author Card -->
-                <div class="bg-white dark:bg-[#1a212f] rounded-xl shadow-lg shadow-black/5 border border-[#f0f2f4] dark:border-white/5 p-6 md:p-8 mb-8">
+                <div class="author-card bg-white dark:bg-[#1a212f] rounded-xl shadow-lg shadow-black/5 border border-[#f0f2f4] dark:border-white/5 p-6 md:p-8 mb-8">
                     <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
                         <div class="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-blue-400 flex items-center justify-center text-white font-bold text-2xl shrink-0">
                             {{ strtoupper(substr($article->author ?? 'A', 0, 1)) }}
                         </div>
                         <div class="text-center sm:text-left">
+                            @php
+                                $authorBio = $article->author_bio ?: __('article.author_bio_default');
+                                $authorBioLimit = 150;
+                                $authorBioIsLong = Str::length($authorBio) > $authorBioLimit;
+                            @endphp
                             <p class="text-xs font-semibold text-primary uppercase tracking-wider mb-1">{{ __('article.written_by') }}</p>
                             <h3 class="text-xl font-bold text-[#111318] dark:text-white mb-2">{{ $article->author ?? __('article.admin') }}</h3>
-                            <p class="text-[#616f89] dark:text-gray-400 text-sm leading-relaxed">
-                                {{ $article->author_bio ? Str::limit($article->author_bio, 150) : __('article.author_bio_default') }}
+                            <p class="text-[#616f89] dark:text-gray-400 text-sm leading-relaxed author-bio">
+                                <span class="author-bio-short">{{ $authorBioIsLong ? Str::limit($authorBio, $authorBioLimit) : $authorBio }}</span>
+                                @if($authorBioIsLong)
+                                    <span class="author-bio-full hidden">{{ $authorBio }}</span>
+                                @endif
                             </p>
+                            @if($authorBioIsLong)
+                                <button
+                                    type="button"
+                                    class="js-author-bio-toggle mt-2 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+                                    data-expanded="false"
+                                    data-show-more="{{ __('article.show_more') }}"
+                                    data-show-less="{{ __('article.show_less') }}"
+                                >
+                                    <span class="js-author-bio-toggle-label">{{ __('article.show_more') }}</span>
+                                    <span class="material-symbols-outlined text-[18px] js-author-bio-toggle-icon">expand_more</span>
+                                </button>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -459,6 +479,7 @@
 
 @push('scripts')
 @include('front.partials.article-structured-data', ['sectionKey' => 'guides'])
+@include('front.partials.author-bio-toggle-script')
 
 <script>
     // Smooth scroll for table of contents

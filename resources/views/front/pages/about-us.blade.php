@@ -121,10 +121,32 @@
                         <span class="text-6xl font-bold text-primary/50">{{ strtoupper(substr($member->name, 0, 1)) }}</span>
                     @endif
                 </div>
-                <div class="p-2 border-l-2 border-transparent group-hover:border-primary transition-all">
+                <div class="bio-card p-2 border-l-2 border-transparent group-hover:border-primary transition-all">
+                    @php
+                        $memberBio = $member->bio ?? '';
+                        $memberBioLimit = 150;
+                        $memberBioIsLong = Str::length($memberBio) > $memberBioLimit;
+                    @endphp
                     <p class="text-[#111318] dark:text-white text-lg font-bold">{{ $member->name }}</p>
                     <p class="text-primary text-sm font-medium mb-2">{{ $member->role }}</p>
-                    <p class="text-[#616f89] dark:text-gray-400 text-sm leading-relaxed">{{ $member->bio }}</p>
+                    <p class="text-[#616f89] dark:text-gray-400 text-sm leading-relaxed author-bio">
+                        <span class="author-bio-short">{{ $memberBioIsLong ? Str::limit($memberBio, $memberBioLimit) : $memberBio }}</span>
+                        @if($memberBioIsLong)
+                            <span class="author-bio-full hidden">{{ $memberBio }}</span>
+                        @endif
+                    </p>
+                    @if($memberBioIsLong)
+                        <button
+                            type="button"
+                            class="js-author-bio-toggle mt-2 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+                            data-expanded="false"
+                            data-show-more="{{ __('article.show_more') }}"
+                            data-show-less="{{ __('article.show_less') }}"
+                        >
+                            <span class="js-author-bio-toggle-label">{{ __('article.show_more') }}</span>
+                            <span class="material-symbols-outlined text-[18px] js-author-bio-toggle-icon">expand_more</span>
+                        </button>
+                    @endif
                 </div>
             </div>
             @endforeach
@@ -188,3 +210,7 @@
     </section>
 </main>
 @endsection
+
+@push('scripts')
+@include('front.partials.author-bio-toggle-script')
+@endpush
