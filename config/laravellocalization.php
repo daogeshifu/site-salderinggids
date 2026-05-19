@@ -18,12 +18,12 @@ return [
             'native' => '中文',
             'regional' => 'zh_CN',
         ],
-        'fr' => [
-            'name' => 'French',
-            'script' => 'Latn',
-            'native' => 'Français',
-            'regional' => 'fr_FR',
-        ],
+//        'fr' => [
+//            'name' => 'French',
+//            'script' => 'Latn',
+//            'native' => 'Français',
+//            'regional' => 'fr_FR',
+//        ],
     ],
 
     // Requires middleware `LaravelSessionRedirect.php`.
