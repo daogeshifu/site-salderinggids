@@ -17,10 +17,10 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('app:process-lunwen-tasks')->everyMinute();
-        // 生成sitemap 每天生成一次
-        $schedule->command('sitemap:generate')->daily();
         // 翻译文章每天翻译一次
         $schedule->command('translate:articles --limit=5 --method=api')->daily();
+        // 生成 sitemap 每天生成一次，放在文章翻译任务之后，避免同一时间并发执行
+        $schedule->command('sitemap:generate --base-url=https://www.hellogeo.ai')->dailyAt('00:30')->withoutOverlapping();
     }
 
     /**

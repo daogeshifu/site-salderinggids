@@ -3,93 +3,147 @@
 namespace App\Console\Commands;
 
 use App\Models\Article\Article;
+use App\Models\Article\ArticleCategory;
 use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
-use App\Models\Article\ArticleCategory;
-use App\Models\Lunwen\LunwenTask;
+
 class GenerateSitemap extends Command
 {
-    protected $signature = 'sitemap:generate';
+    protected $signature = 'sitemap:generate {--base-url= : Override APP_URL when generating absolute sitemap links}';
     protected $description = 'Generate the sitemap.xml file';
 
     public function handle()
     {
-        $sitemap = Sitemap::create()
-            ->add(Url::create('/')->setPriority(1.0)->setChangeFrequency('daily'));
+        $sitemap = Sitemap::create();
+        $locales = $this->supportedLocales();
+        $categories = ArticleCategory::query()->orderBy('name')->get();
 
-        
-        //detector sitemap
-        // $this->genDetectorSitemap($sitemap);
-        //reducer sitemap
-        // $this->genReducerSitemap($sitemap);
-      
-
-        // 生成分类sitemap
-        $this->genCategorySitemap($sitemap);
-
-        // 生成文章sitemap
-        $this->genArticleSitemap($sitemap);
+        foreach ($locales as $locale) {
+            $this->addStaticPages($sitemap, $locale);
+            $this->addSectionPages($sitemap, $locale, $categories);
+            $this->addCategoryPages($sitemap, $locale, $categories);
+            $this->addArticlePages($sitemap, $locale);
+        }
 
         // 保存到 public/sitemap.xml
         $sitemap->writeToFile(public_path('sitemap.xml'));
 
-        $this->info('✅ Sitemap generated successfully!');
+        $this->info('Sitemap generated successfully: ' . public_path('sitemap.xml'));
     }
 
-
-    private function genDetectorSitemap($sitemap)
+    private function addStaticPages(Sitemap $sitemap, string $locale): void
     {
-        $sitemap->add(Url::create('/detector')->setPriority(0.8)->setChangeFrequency('weekly'));
+        $pages = [
+            ['path' => '/', 'priority' => 1.0, 'frequency' => Url::CHANGE_FREQUENCY_DAILY],
+            ['path' => '/pricing', 'priority' => 0.8, 'frequency' => Url::CHANGE_FREQUENCY_WEEKLY],
+            ['path' => '/price', 'priority' => 0.8, 'frequency' => Url::CHANGE_FREQUENCY_WEEKLY],
+            ['path' => '/about', 'priority' => 0.7, 'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
+            ['path' => '/contact', 'priority' => 0.6, 'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
+            ['path' => '/help', 'priority' => 0.6, 'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
+            ['path' => '/terms', 'priority' => 0.4, 'frequency' => Url::CHANGE_FREQUENCY_YEARLY],
+            ['path' => '/policy', 'priority' => 0.4, 'frequency' => Url::CHANGE_FREQUENCY_YEARLY],
+        ];
 
-        $detector = LunwenTask::where('status', 1)->get();
-        foreach ($detector as $detector) {
-            $sitemap->add(route('aigc.detector.show',[$detector->order_number]))
-                ->setLastModificationDate($detector->updated_at)
-                ->setChangeFrequency('weekly')
-                ->setPriority(0.8);
+        foreach ($pages as $page) {
+            $sitemap->add(
+                Url::create($this->localizedUrl($locale, $page['path']))
+                    ->setLastModificationDate(Carbon::now())
+                    ->setChangeFrequency($page['frequency'])
+                    ->setPriority($page['priority'])
+            );
         }
     }
 
-    private function genReducerSitemap($sitemap)
+    private function addSectionPages(Sitemap $sitemap, string $locale, Collection $categories): void
     {
-        $sitemap->add(Url::create('/reducer')->setPriority(1)->setChangeFrequency('weekly'));
+        $sections = [
+            'news' => ['priority' => 0.9, 'frequency' => Url::CHANGE_FREQUENCY_DAILY],
+            'guides' => ['priority' => 0.9, 'frequency' => Url::CHANGE_FREQUENCY_WEEKLY],
+            'cases' => ['priority' => 0.8, 'frequency' => Url::CHANGE_FREQUENCY_WEEKLY],
+            'article' => ['priority' => 0.8, 'frequency' => Url::CHANGE_FREQUENCY_WEEKLY],
+        ];
 
-        $reducer = LunwenTask::where('status', 1)->get();
-        foreach ($reducer as $reducer) {
-            $sitemap->add(route('aigc.reducer.show',[$reducer->order_number]))
-                ->setLastModificationDate($reducer->updated_at)
-                ->setChangeFrequency('weekly')
-                ->setPriority(0.8);
+        foreach ($sections as $path => $meta) {
+            $category = $categories->firstWhere('name', $path);
+
+            $sitemap->add(
+                Url::create($this->localizedUrl($locale, '/' . $path))
+                    ->setLastModificationDate($category?->updated_at ?? Carbon::now())
+                    ->setChangeFrequency($meta['frequency'])
+                    ->setPriority($meta['priority'])
+            );
         }
     }
 
-    private function genCategorySitemap($sitemap)
+    private function addCategoryPages(Sitemap $sitemap, string $locale, Collection $categories): void
     {
-        $categories = ArticleCategory::all();
         foreach ($categories as $category) {
-            $url = Url::create(route('aigc.blog.category', [$category->name]))
-                ->setLastModificationDate($category->updated_at)
-                ->setChangeFrequency('weekly')
-                ->setPriority(1.0);
-    
-            $sitemap->add($url);
+            if (!$category->name || in_array($category->name, ['news', 'guides', 'cases'], true)) {
+                continue;
+            }
+
+            $sitemap->add(
+                Url::create($this->localizedUrl($locale, '/' . $category->name))
+                    ->setLastModificationDate($category->updated_at)
+                    ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                    ->setPriority(0.8)
+            );
         }
     }
-    private function genArticleSitemap($sitemap)
+
+    private function addArticlePages(Sitemap $sitemap, string $locale): void
     {
-        $sitemap->add(Url::create('/blog')->setPriority(1)->setChangeFrequency('weekly'));
-        $articles = Article::all();
-        $i = 0;
-        Article::chunk(40000, function ($articles) use ($sitemap,  &$i) {
-            foreach ($articles as $article) {
-                $url = Url::create(route('aigc.blog.detail.show',[$article->category->name,$article->link]))
-                ->setLastModificationDate($article->updated_at)
-                    ->setChangeFrequency('weekly')
-                    ->setPriority(0.8);
-                $sitemap->add($url);
-            }
-            $i++;
-        });
+        Article::query()
+            ->with('category')
+            ->whereNotNull('link')
+            ->whereHas('translations', function ($query) use ($locale) {
+                $query->where('locale', $locale);
+            })
+            ->orderBy('id')
+            ->chunkById(1000, function ($articles) use ($sitemap, $locale) {
+                foreach ($articles as $article) {
+                    if (!$article->category || !$article->category->name) {
+                        continue;
+                    }
+
+                    $sitemap->add(
+                        Url::create($this->localizedUrl(
+                            $locale,
+                            '/' . $article->category->name . '/' . $article->link . '.html'
+                        ))
+                            ->setLastModificationDate($article->updated_at)
+                            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                            ->setPriority(0.8)
+                    );
+                }
+            });
+    }
+
+    private function localizedUrl(string $locale, string $path): string
+    {
+        $path = '/' . ltrim($path, '/');
+        $defaultLocale = config('laravellocalization.defaultLocale', config('app.locale', 'en'));
+        $hideDefaultLocale = config('laravellocalization.hideDefaultLocaleInURL', false);
+
+        if ($locale !== $defaultLocale || !$hideDefaultLocale) {
+            $path = '/' . $locale . ($path === '/' ? '' : $path);
+        }
+
+        return $this->baseUrl() . ($path === '/' ? '' : $path);
+    }
+
+    private function baseUrl(): string
+    {
+        return rtrim($this->option('base-url') ?: config('app.url'), '/');
+    }
+
+    private function supportedLocales(): array
+    {
+        return array_keys(config('laravellocalization.supportedLocales', [
+            config('app.locale', 'en') => [],
+        ]));
     }
 }
