@@ -1,3 +1,8 @@
 User-agent: *
-Disallow:
-Sitemap: https://www.aigcchecker.com/sitemap.xml
+Disallow: /fr/
+Disallow: /article/
+Disallow: /zh/article/
+Disallow: /*/article/
+Disallow: /admin/
+
+Sitemap: https://www.hellogeo.ai/sitemap.xml
