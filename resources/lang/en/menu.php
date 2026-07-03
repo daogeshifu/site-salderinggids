@@ -10,7 +10,7 @@ return [
     'ai_detection' => 'AI Detection',
     'ai_reduce' => 'AI Reduce',
     'account' => 'Account',
-    'insights' => 'Insights',
+    'insights' => 'Articles',
     'about' => 'About',
     'pricing' => 'Pricing',
     'services' => 'Services',

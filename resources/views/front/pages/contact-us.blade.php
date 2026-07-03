@@ -26,7 +26,7 @@
         <!-- Left Side: Content & Contact Details -->
         <div class="space-y-12">
             <div class="space-y-6">
-                <h1 class="text-5xl md:text-6xl font-black text-[#111318] dark:text-white leading-[1.1] tracking-tight">
+                <h1 class="text-4xl font-black text-[#111318] dark:text-white leading-[1.1] tracking-tight">
                     {{ __('contact-us.title') }} <span class="text-primary">{{ __('contact-us.hero_highlight') }}</span>
                 </h1>
                 <p class="text-[#616f89] dark:text-gray-400 text-lg md:text-xl max-w-lg leading-relaxed">

@@ -215,7 +215,7 @@
                     @endif
 
                     <!-- Title -->
-                    <h1 class="text-3xl md:text-4xl lg:text-[42px] font-bold text-[#111318] dark:text-white leading-tight mb-6">{{ $article->title }}</h1>
+                    <h1 class="text-4xl font-bold text-[#111318] dark:text-white leading-tight mb-6">{{ $article->title }}</h1>
 
                     <!-- Meta Info -->
                     <div class="flex flex-wrap items-center gap-4 text-sm text-[#616f89] dark:text-gray-400">
@@ -277,13 +277,11 @@
                                     </a>
                                 @endforeach
                             @else
-                                {{-- Default tags when article has no tags --}}
-                                <a href="{{ route('articles', ['tag' => 'GEO']) }}" class="inline-flex items-center px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 transition-colors">
-                                    <span class="mr-1">#</span>GEO
-                                </a>
-                                <a href="{{ route('articles') }}" class="inline-flex items-center px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 text-[#616f89] dark:text-gray-400 text-sm hover:bg-primary/10 hover:text-primary transition-colors">
-                                    <span class="material-symbols-outlined text-[14px] mr-1">visibility</span>{{ __('article.view_all') }}
-                                </a>
+                                @foreach(config('site.fallback_tags', []) as $fallbackTag)
+                                    <a href="{{ route('articles', ['search' => $fallbackTag]) }}" class="inline-flex items-center px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 transition-colors">
+                                        <span class="mr-1">#</span>{{ $fallbackTag }}
+                                    </a>
+                                @endforeach
                             @endif
                         </div>
                     </div>
@@ -417,25 +415,11 @@
                                     </a>
                                 @endforeach
                             @else
-                                {{-- Default tags when no tags available --}}
-                                <a href="{{ route('articles', ['tag' => 'GEO']) }}" class="px-3 py-1.5 bg-primary/10 rounded-full text-xs font-semibold text-primary hover:bg-primary hover:text-white transition-all">
-                                    #GEO
-                                </a>
-                                <a href="{{ route('articles', ['tag' => 'AI']) }}" class="px-3 py-1.5 bg-[#f0f2f4] dark:bg-white/5 rounded-full text-xs font-medium text-[#616f89] dark:text-gray-400 hover:bg-primary hover:text-white transition-all">
-                                    #AI
-                                </a>
-                                <a href="{{ route('articles', ['tag' => 'SEO']) }}" class="px-3 py-1.5 bg-[#f0f2f4] dark:bg-white/5 rounded-full text-xs font-medium text-[#616f89] dark:text-gray-400 hover:bg-primary hover:text-white transition-all">
-                                    #SEO
-                                </a>
-                                <a href="{{ route('articles', ['tag' => 'LLM']) }}" class="px-3 py-1.5 bg-[#f0f2f4] dark:bg-white/5 rounded-full text-xs font-medium text-[#616f89] dark:text-gray-400 hover:bg-primary hover:text-white transition-all">
-                                    #LLM
-                                </a>
-                                <a href="{{ route('articles', ['tag' => 'AIGC']) }}" class="px-3 py-1.5 bg-[#f0f2f4] dark:bg-white/5 rounded-full text-xs font-medium text-[#616f89] dark:text-gray-400 hover:bg-primary hover:text-white transition-all">
-                                    #AIGC
-                                </a>
-                                <a href="{{ route('articles') }}" class="px-3 py-1.5 bg-[#f0f2f4] dark:bg-white/5 rounded-full text-xs font-medium text-[#616f89] dark:text-gray-400 hover:bg-primary hover:text-white transition-all flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[12px]">more_horiz</span>{{ __('article.view_all') }}
-                                </a>
+                                @foreach(config('site.fallback_tags', []) as $fallbackTag)
+                                    <a href="{{ route('articles', ['search' => $fallbackTag]) }}" class="px-3 py-1.5 {{ $loop->first ? 'bg-primary/10 text-primary' : 'bg-[#f0f2f4] text-[#616f89]' }} dark:bg-white/5 rounded-full text-xs font-medium dark:text-gray-400 hover:bg-primary hover:text-white transition-all">
+                                        #{{ $fallbackTag }}
+                                    </a>
+                                @endforeach
                             @endif
                         </div>
                     </div>
@@ -461,15 +445,15 @@
                         </div>
                     @endif
 
-                    <!-- Newsletter CTA -->
-                    <div class="bg-gradient-to-br from-primary to-blue-600 rounded-xl p-6 text-white">
-                        <span class="material-symbols-outlined text-[32px] mb-3">mail</span>
-                        <h4 class="font-bold text-lg mb-2">{{ __('lang.subscribe') }}</h4>
-                        <p class="text-white/80 text-sm mb-4">{{ __('lang.subscribe_desc') }}</p>
-                        <a href="{{ route('contact') }}" class="inline-flex items-center justify-center w-full h-10 bg-white text-primary font-semibold rounded-lg hover:bg-white/90 transition-colors text-sm">
-                            {{ __('lang.subscribe_btn') }}
-                        </a>
-                    </div>
+                    @include('front.partials.site-resource-widget', [
+                        'limit' => 3,
+                        'widgetTitle' => app()->getLocale() === 'zh' ? '净计量官方来源' : 'Official net metering sources',
+                        'widgetDescription' => app()->getLocale() === 'zh'
+                            ? '案例与市场观察旁边放政策来源，有助于用户区分事实与市场解读。'
+                            : 'Pair market analysis with the official sources so readers can separate policy facts from commentary.',
+                    ])
+
+                    @include('front.partials.calculator-cta')
                 </div>
             </aside>
         </div>

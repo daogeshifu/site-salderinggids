@@ -11,21 +11,23 @@
     $section         = $sectionMap[$sectionKey] ?? $sectionMap['news'];
     $categoryName    = $isZh ? $section['zh'] : $section['en'];
     $categoryUrl     = route($section['route']);
+    $siteName        = config('site.name', 'SalderingGids');
+    $siteUrl         = rtrim(config('app.url', 'https://salderinggids.nl'), '/');
 
     $authorName   = $article->author ?? ($isZh ? '管理员' : 'Admin');
     $authorBio    = $article->author_bio ?? '';
     $headline     = $article->seo_title ?? $article->title;
     $description  = $article->seo_description ?? $article->summary ?? $article->title;
     $coverAbsUrl  = $article->cover ? url(\Illuminate\Support\Facades\Storage::url($article->cover)) : '';
-    $publishedAt  = $article->created_at->format('Y-m-d\TH:i:s+08:00');
-    $modifiedAt   = $article->updated_at->format('Y-m-d\TH:i:s+08:00');
-    $inLanguage   = $isZh ? 'zh-CN' : 'en-GB';
+    $publishedAt  = optional($article->created_at)->toAtomString();
+    $modifiedAt   = optional($article->updated_at)->toAtomString();
+    $inLanguage   = $isZh ? 'zh-CN' : 'en';
     $homeName     = $isZh ? '首页' : 'Home';
     $logoUrl      = asset('logo.png');
 
     $orgDescription = $isZh
-        ? 'HelloGeo 是一个致力于提供最新生成式引擎优化 (GEO) 新闻和指南的专业资源库，提供实用的技巧和专家见解，以提升在生成式搜索引擎中的可见度。'
-        : 'HelloGeo is a dedicated resource providing the latest Generative Engine Optimization (GEO) news and guides, offering actionable tips and expert insights to enhance visibility in generative search engines.';
+        ? 'SalderingGids 是一个围绕荷兰净计量、太阳能回馈电价和家庭能源合同变化的专题资源站，提供规则说明、政府来源与实用计算工具。'
+        : 'SalderingGids is a focused resource about Dutch net metering, solar feed-in compensation, and household energy contract changes, with explainers, government sources, and practical calculators.';
 @endphp
 
 <script type="application/ld+json">
@@ -34,9 +36,9 @@
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://www.hellogeo.ai/#organization",
-      "name": "HelloGEO",
-      "url": "https://www.hellogeo.ai/",
+      "@id": "{{ $siteUrl }}/#organization",
+      "name": "{{ $siteName }}",
+      "url": "{{ $siteUrl }}/",
       "logo": {
         "@type": "ImageObject",
         "url": "{{ $logoUrl }}"
@@ -70,7 +72,7 @@
         "@id": "{{ $currentUrl }}#author"
       },
       "publisher": {
-        "@id": "https://www.hellogeo.ai/#organization"
+        "@id": "{{ $siteUrl }}/#organization"
       },
       "inLanguage": "{{ $inLanguage }}"
     }
@@ -90,7 +92,7 @@
           "@type": "ListItem",
           "position": 1,
           "name": "{{ $homeName }}",
-          "item": "https://www.hellogeo.ai/"
+          "item": "{{ $siteUrl }}/"
         },
         {
           "@type": "ListItem",

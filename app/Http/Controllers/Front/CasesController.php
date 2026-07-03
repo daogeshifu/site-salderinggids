@@ -58,16 +58,12 @@ class CasesController extends Controller
 
         // 基础查询（只查 cases，category 不存在时 where null 自然返回空）
         $query = Article::with(['category', 'user'])
-            ->whereTranslation('locale', $locale)
+            ->forFrontendLocale($locale)
             ->where('category_id', $currentCategory->id);
 
         // 搜索（注意：要把 OR 条件包起来，否则会“跳出分类条件”）
         if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->whereTranslationLike('title', "%{$search}%")
-                    ->orWhereTranslationLike('content', "%{$search}%")
-                    ->orWhereTranslationLike('summary', "%{$search}%");
-            });
+            $query->searchFrontend($search, $locale);
         }
 
         $articles = $query->orderBy('id', 'desc')
@@ -80,7 +76,7 @@ class CasesController extends Controller
         $topArticle = null;
         if (!$search && $currentPage == 1) {
             $topArticle = Article::with(['category', 'user'])
-                ->whereTranslation('locale', $locale)
+                ->forFrontendLocale($locale)
                 ->where('category_id', $currentCategory->id)
                 ->orderBy('id', 'desc')
                 ->first();

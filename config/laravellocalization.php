@@ -6,6 +6,12 @@ return [
     // These are sorted by the native name, which is the order you might show them in a language selector.
     // Regional languages are sorted by their base language, so "British English" sorts as "English, British"
     'supportedLocales' => [
+        'nl' => [
+            'name' => 'Dutch',
+            'script' => 'Latn',
+            'native' => 'Nederlands',
+            'regional' => 'nl_NL',
+        ],
         'en' => [
             'name' => 'English',
             'script' => 'Latn',
@@ -59,7 +65,7 @@ return [
     // If you want to display the locales in particular order in the language selector you should write the order here.
     //CAUTION: Please consider using the appropriate locale code otherwise it will not work
     //Example: 'localesOrder' => ['es','en'],
-    'localesOrder' => ['en', 'zh', 'fr'],
+    'localesOrder' => ['nl', 'en', 'zh'],
 
     // If you want to use custom language URL segments like 'at' instead of 'de-AT', you can map them to allow the
     // LanguageNegotiator to assign the desired locales based on HTTP Accept Language Header. For example, if you want
@@ -77,7 +83,7 @@ return [
     'httpMethodsIgnored' => ['POST', 'PUT', 'PATCH', 'DELETE'],
 
     // Default locale
-    'defaultLocale' => 'en',
+    'defaultLocale' => 'nl',
     
     // Enable language negotiation from browser
     'detectBrowserLocale' => true,
@@ -86,7 +92,7 @@ return [
     'preventRedirect' => false,
     
     // Default locale for canonical redirect
-    'defaultLocaleForCanonicalRedirect' => 'en',
+    'defaultLocaleForCanonicalRedirect' => 'nl',
     
     // Locale separator
     'localeSeparator' => '-',

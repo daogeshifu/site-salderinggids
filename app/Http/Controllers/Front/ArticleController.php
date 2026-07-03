@@ -63,21 +63,19 @@ class ArticleController extends Controller
 
         // 基础查询
         $query = Article::with(['category', 'user'])
-            ->whereTranslation('locale', $locale);
-
-        // 搜索处理
-        if($search) {
-            $query->whereTranslationLike('title', "%{$search}%")
-                ->orWhereTranslationLike('content', "%{$search}%")
-                ->orWhereTranslationLike('summary', "%{$search}%");
-        }
+            ->forFrontendLocale($locale);
 
         // 分类筛选
         if(!$category_name || 'all' == $category_name)
         {
             $currentCategory = new ArticleCategory([
                 'id' => 0,
-                'name' => 'All Categories',
+                'name' => app()->getLocale() === 'zh' ? '全部文章' : (app()->getLocale() === 'nl' ? 'Alle artikelen' : 'All Articles'),
+                'seo_description' => app()->getLocale() === 'zh'
+                    ? '浏览荷兰净计量、太阳能回馈电价和家庭能源账单相关的全部文章。'
+                    : (app()->getLocale() === 'nl'
+                        ? 'Bekijk alle artikelen over de Nederlandse salderingsregeling, terugleververgoedingen en energierekeningen voor huishoudens.'
+                        : 'Browse all articles about Dutch net metering, solar feed-in tariffs, and residential energy bills.'),
             ]);
         }
         else
@@ -90,6 +88,11 @@ class ArticleController extends Controller
             }
         }
 
+        // 搜索处理
+        if($search) {
+            $query->searchFrontend($search, $locale);
+        }
+
         $articles = $query->orderBy('id', 'desc')->paginate(9)->appends([
             'search' => $search
         ]);
@@ -98,13 +101,35 @@ class ArticleController extends Controller
 
         $topArticle = null;
         if(!$search && $currentPage == 1) {
-            $topArticle = Article::whereTranslation('locale', $locale)->where('id', 12)->first();
-            if(!$topArticle){
-                $topArticle = Article::whereTranslation('locale', $locale)->orderBy('id', 'desc')->first();
+            $topArticleQuery = Article::with(['category', 'user'])
+                ->forFrontendLocale($locale);
+
+            if ($currentCategory->id) {
+                $topArticleQuery->where('category_id', $currentCategory->id);
             }
+
+            $topArticle = $topArticleQuery
+                ->orderByDesc('view_count')
+                ->orderByDesc('id')
+                ->first();
         }
 
-        return view('front.article.index', compact('articles', 'categories', 'currentCategory', 'topArticle', 'search', 'currentPage'));
+        $popularArticles = Article::with(['category', 'user'])
+            ->forFrontendLocale($locale)
+            ->orderByDesc('view_count')
+            ->orderByDesc('id')
+            ->take(5)
+            ->get();
+
+        return view('front.article.index', compact(
+            'articles',
+            'categories',
+            'currentCategory',
+            'topArticle',
+            'search',
+            'currentPage',
+            'popularArticles'
+        ));
     }
 
     /**
@@ -118,7 +143,7 @@ class ArticleController extends Controller
         if ($category_name && 'all' != $category_name) {
             return route('article.category2', ['category_name' => $category_name]);
         }
-        return route('index');
+        return route('articles');
     }
 
     /**

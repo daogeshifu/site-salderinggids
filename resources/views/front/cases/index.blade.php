@@ -32,7 +32,7 @@
 
     <!-- Page Heading -->
     <div class="mb-12">
-        <h1 class="text-4xl md:text-5xl font-black leading-tight tracking-tight mb-4">{{ $currentCategory->name }}</h1>
+        <h1 class="text-4xl font-black leading-tight tracking-tight mb-4">{{ $currentCategory->name }}</h1>
         <p class="text-[#616f89] dark:text-[#94a3b8] text-lg max-w-2xl">
             {{ $currentCategory->seo_description ?? __('article.newsroom_description') }}
         </p>

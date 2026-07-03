@@ -41,7 +41,7 @@
 
     <!-- Page Heading -->
     <div class="mb-12">
-        <h1 class="text-4xl md:text-5xl font-black leading-tight tracking-tight mb-4">{{ $currentCategory->name }}</h1>
+        <h1 class="text-4xl font-black leading-tight tracking-tight mb-4">{{ $currentCategory->name }}</h1>
         <p class="text-[#616f89] dark:text-[#94a3b8] text-lg max-w-2xl">
             {{ $currentCategory->seo_description ?? __('article.newsroom_description') }}
         </p>
@@ -191,21 +191,12 @@
 
         <!-- Right Content: Sidebar -->
         <aside class="flex-1 flex flex-col gap-10">
+            @include('front.partials.site-resource-widget', [
+                'limit' => 3,
+                'widgetTitle' => app()->getLocale() === 'zh' ? '净计量官方来源' : 'Official net metering sources',
+            ])
 
-            <!-- Newsletter CTA -->
-            <div class="bg-primary rounded-xl p-6 text-white overflow-hidden relative group">
-                <div class="absolute -right-8 -bottom-8 size-32 bg-white/10 rounded-full blur-2xl group-hover:bg-white/20 transition-all"></div>
-                <div class="relative z-10">
-                    <h4 class="text-xl font-bold mb-2">{{ __('lang.subscribe') }}</h4>
-                    <p class="text-white/80 text-sm mb-4">{{ __('lang.subscribe_desc') }}</p>
-                    <form action="{{ route('contact') }}" method="GET">
-                        <input type="email" name="email" class="w-full bg-white/20 border-none rounded-lg text-white placeholder:text-white/60 mb-3 text-sm focus:ring-0 py-2 px-3" placeholder="{{ __('contact.email_placeholder') }}"/>
-                        <button type="submit" class="w-full bg-white text-primary font-bold py-2 rounded-lg text-sm hover:bg-white/90 transition-colors">
-                            {{ __('lang.join_newsletter') }}
-                        </button>
-                    </form>
-                </div>
-            </div>
+            @include('front.partials.calculator-cta')
         </aside>
     </div>
 </main>

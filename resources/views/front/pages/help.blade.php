@@ -12,7 +12,7 @@
             <div class="overflow-hidden rounded-xl bg-gradient-to-br from-[#135bec] via-[#4f46e5] to-[#7c3aed] p-[1px]">
                 <div class="relative flex min-h-[400px] flex-col items-center justify-center gap-8 rounded-xl bg-gradient-to-br from-primary/40 to-background-dark/80 px-6 py-12 text-center overflow-hidden">
                     <div class="z-10 flex flex-col gap-4">
-                        <h1 class="text-4xl font-black tracking-tight text-white md:text-6xl">
+                        <h1 class="text-4xl font-black tracking-tight text-white">
                             {{ __('help.how_can_we_help') }}
                         </h1>
                         <p class="mx-auto max-w-xl text-lg font-normal text-white/90">

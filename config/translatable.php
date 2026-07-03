@@ -11,6 +11,7 @@ return [
     |
     */
     'locales' => [
+        'nl',
         'en',
         'zh',
         'fr',
@@ -57,7 +58,7 @@ return [
     | $useTranslationFallback when defined
     |
     */
-    'use_fallback' => false,
+    'use_fallback' => true,
 
     /*
     |--------------------------------------------------------------------------

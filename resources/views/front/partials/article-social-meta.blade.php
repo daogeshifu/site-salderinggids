@@ -5,6 +5,7 @@
     $ogImage       = $article->cover
         ? url(\Illuminate\Support\Facades\Storage::url($article->cover))
         : asset('logo.png');
+    $siteName = config('site.name', 'SalderingGids');
 @endphp
 
 <meta property="og:type"        content="article">
@@ -12,7 +13,7 @@
 <meta property="og:description" content="{{ $ogDescription }}">
 <meta property="og:url"         content="{{ $ogUrl }}">
 <meta property="og:image"       content="{{ $ogImage }}">
-<meta property="og:site_name"   content="HelloGeo">
+<meta property="og:site_name"   content="{{ $siteName }}">
 
 <meta name="twitter:card"        content="summary_large_image">
 <meta name="twitter:title"       content="{{ $ogTitle }}">

@@ -28,7 +28,7 @@
     <div class="max-w-[1200px] mx-auto px-6 py-10">
         <!-- Hero Title -->
         <div class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-bold font-display tracking-tight mb-4 text-[#111318] dark:text-white">
+            <h1 class="text-4xl font-bold font-display tracking-tight mb-4 text-[#111318] dark:text-white">
                 {{ $currentCategory->name }}
             </h1>
             <p class="text-[#616f89] dark:text-gray-400 max-w-2xl mx-auto">

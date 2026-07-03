@@ -10,7 +10,7 @@ return [
     'ai_detection' => 'AI检测',
     'ai_reduce' => 'AI降重',
     'account' => '账户',
-    'insights' => '洞察',
+    'insights' => '文章',
     'about' => '关于',
     'pricing' => '价格',
     'services' => '服务',

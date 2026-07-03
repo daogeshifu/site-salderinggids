@@ -8,6 +8,7 @@ use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Astrotomic\Translatable\Translatable;
 use App\Models\User\User;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Database\Eloquent\Builder;
 
 class Article extends Model implements TranslatableContract
 {
@@ -80,6 +81,42 @@ class Article extends Model implements TranslatableContract
             'article_id',
             'article_tag_id'
         );
+    }
+
+    public static function frontendLocales(?string $locale = null): array
+    {
+        $locale = $locale ?: app()->getLocale();
+        $locales = [$locale];
+
+        if ($locale !== 'en') {
+            $locales[] = 'en';
+        }
+
+        return array_values(array_unique($locales));
+    }
+
+    public function scopeForFrontendLocale(Builder $query, ?string $locale = null): Builder
+    {
+        $locales = self::frontendLocales($locale);
+
+        return $query->whereHas('translations', function (Builder $translationQuery) use ($locales) {
+            $translationQuery->whereIn('locale', $locales);
+        });
+    }
+
+    public function scopeSearchFrontend(Builder $query, string $search, ?string $locale = null): Builder
+    {
+        $locales = self::frontendLocales($locale);
+
+        return $query->whereHas('translations', function (Builder $translationQuery) use ($search, $locales) {
+            $translationQuery
+                ->whereIn('locale', $locales)
+                ->where(function (Builder $contentQuery) use ($search) {
+                    $contentQuery->where('title', 'like', "%{$search}%")
+                        ->orWhere('content', 'like', "%{$search}%")
+                        ->orWhere('summary', 'like', "%{$search}%");
+                });
+        });
     }
 
     /**

@@ -36,7 +36,7 @@
     <!-- Page Heading -->
     <div class="flex flex-wrap justify-between items-end gap-3 mb-12">
         <div class="flex flex-col gap-3">
-            <h1 class="text-[#111318] dark:text-white text-5xl font-black leading-tight tracking-[-0.033em]">{{ __('privacy-policy.privacy_policy_title') }}</h1>
+            <h1 class="text-[#111318] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">{{ __('privacy-policy.privacy_policy_title') }}</h1>
             <p class="text-[#616f89] dark:text-slate-400 text-base font-normal">{{ __('privacy-policy.privacy_subtitle') }}</p>
         </div>
         <div class="flex flex-col items-end gap-3">

@@ -25,7 +25,7 @@
             <div class="flex min-h-[420px] flex-col gap-6 items-center justify-center p-8 text-center bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent">
                 <div class="flex flex-col gap-4 max-w-3xl">
                     <span class="text-primary font-bold tracking-widest text-xs uppercase">{{ __('about-us.since_year') }}</span>
-                    <h1 class="text-[#111318] dark:text-white text-4xl md:text-6xl font-black leading-tight tracking-tight">
+                    <h1 class="text-[#111318] dark:text-white text-4xl font-black leading-tight tracking-tight">
                         {{ __('about-us.hero_title') }}
                     </h1>
                     <p class="text-[#616f89] dark:text-gray-400 text-lg md:text-xl font-normal leading-relaxed">

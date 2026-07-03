@@ -26,7 +26,7 @@
         <!-- Page Heading -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12 border-b border-[#f0f2f4] dark:border-[#2a303c] pb-8">
             <div class="flex flex-col gap-3">
-                <h1 class="text-[#111318] dark:text-white text-5xl font-black tracking-tight">{{ __('terms-of-service.terms_title') }}</h1>
+                <h1 class="text-[#111318] dark:text-white text-4xl font-black tracking-tight">{{ __('terms-of-service.terms_title') }}</h1>
                 <p class="text-[#616f89] dark:text-gray-400 text-lg">{{ __('terms-of-service.last_updated') }}: {{ __('terms-of-service.last_updated_date') }}</p>
             </div>
             <div class="flex gap-4">

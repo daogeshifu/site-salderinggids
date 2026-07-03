@@ -1,5 +1,24 @@
 <!DOCTYPE html>
 <html class="light" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@php
+    $siteName = config('site.name', config('app.name', 'SalderingGids'));
+    $siteDomain = config('site.domain', parse_url(config('app.url'), PHP_URL_HOST));
+    $siteUrl = rtrim(config('app.url', 'https://salderinggids.nl'), '/');
+    $locale = app()->getLocale();
+    $metaTitle = trim($__env->yieldContent('title')) ?: ($locale === 'zh' ? 'SalderingGids 荷兰净计量专题' : ($locale === 'nl' ? 'SalderingGids Nederlandse salderingsgids' : 'SalderingGids Dutch net metering guide'));
+    $metaDescription = trim($__env->yieldContent('description')) ?: ($locale === 'zh'
+        ? '荷兰净计量、回馈补偿、太阳能合同和 2027 政策变化的专题内容站。'
+        : ($locale === 'nl'
+            ? 'Een themasite over de Nederlandse salderingsregeling, terugleververgoeding, zonne-energiecontracten en de wijziging vanaf 2027.'
+            : 'A focused site about Dutch net metering, feed-in compensation, solar contracts, and the 2027 policy transition.'));
+    $metaKeywords = trim($__env->yieldContent('keywords')) ?: 'salderingsregeling, zonnepanelen, terugleververgoeding, energiecontract, net metering';
+    $ogLocale = $locale === 'zh' ? 'zh_CN' : ($locale === 'nl' ? 'nl_NL' : 'en_GB');
+    $orgDescription = $locale === 'zh'
+        ? 'SalderingGids 是聚焦荷兰净计量、太阳能回馈补偿和家庭能源合同变化的专题内容站。'
+        : ($locale === 'nl'
+            ? 'SalderingGids is een gespecialiseerde themasite over de Nederlandse salderingsregeling, terugleververgoedingen en energiecontracten voor huishoudens.'
+            : 'SalderingGids is a focused content site about Dutch net metering, solar feed-in compensation, and household energy contracts.');
+@endphp
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -8,18 +27,65 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- SEO meta tags -->
-    <title>@yield('title')</title>
-    <meta name="description" content="@yield('description')">
-    <meta name="keywords" content="@yield('keywords')">
-    <meta name="author" content="hellogeo.ai">
+    <title>{{ $metaTitle }}</title>
+    <meta name="description" content="{{ $metaDescription }}">
+    <meta name="keywords" content="{{ $metaKeywords }}">
+    <meta name="author" content="{{ $siteDomain }}">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="{{ request()->url() }}" />
 
     <!-- Hreflang alternate links -->
     @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-        @continue($localeCode === 'fr')
     <link rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode) }}" />
     @endforeach
     <link rel="alternate" hreflang="x-default" href="{{ LaravelLocalization::getLocalizedURL(config('laravellocalization.defaultLocale', 'en')) }}" />
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ $metaTitle }}">
+    <meta property="og:description" content="{{ $metaDescription }}">
+    <meta property="og:url" content="{{ request()->url() }}">
+    <meta property="og:site_name" content="{{ $siteName }}">
+    <meta property="og:locale" content="{{ $ogLocale }}">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $metaTitle }}">
+    <meta name="twitter:description" content="{{ $metaDescription }}">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "{{ $siteUrl }}/#organization",
+          "name": "{{ $siteName }}",
+          "url": "{{ $siteUrl }}/",
+          "description": "{{ $orgDescription }}"
+        },
+        {
+          "@type": "WebSite",
+          "@id": "{{ $siteUrl }}/#website",
+          "url": "{{ $siteUrl }}/",
+          "name": "{{ $siteName }}",
+          "inLanguage": "{{ $ogLocale }}",
+          "publisher": {
+            "@id": "{{ $siteUrl }}/#organization"
+          }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "{{ request()->url() }}#webpage",
+          "url": "{{ request()->url() }}",
+          "name": "{{ $metaTitle }}",
+          "description": "{{ $metaDescription }}",
+          "isPartOf": {
+            "@id": "{{ $siteUrl }}/#website"
+          },
+          "inLanguage": "{{ $ogLocale }}"
+        }
+      ]
+    }
+    </script>
 
     <!-- Favicon (SVG) -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg fill='%23135bec' viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath clip-rule='evenodd' d='M24 18.4228L42 11.475V34.3663C42 34.7796 41.7457 35.1504 41.3601 35.2992L24 42V18.4228Z' fill-rule='evenodd'/%3E%3Cpath clip-rule='evenodd' d='M24 8.18819L33.4123 11.574L24 15.2071L14.5877 11.574L24 8.18819ZM9 15.8487L21 20.4805V37.6263L9 32.9945V15.8487ZM27 37.6263V20.4805L39 15.8487V32.9945L27 37.6263ZM25.354 2.29885C24.4788 1.98402 23.5212 1.98402 22.646 2.29885L4.98454 8.65208C3.7939 9.08038 3 10.2097 3 11.475V34.3663C3 36.0196 4.01719 37.5026 5.55962 38.098L22.9197 44.7987C23.6149 45.0671 24.3851 45.0671 25.0803 44.7987L42.4404 38.098C43.9828 37.5026 45 36.0196 45 34.3663V11.475C45 10.2097 44.2061 9.08038 43.0155 8.65208L25.354 2.29885Z' fill-rule='evenodd'/%3E%3C/svg%3E">
