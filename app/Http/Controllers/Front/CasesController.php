@@ -82,7 +82,7 @@ class CasesController extends Controller
                 ->first();
         }
 
-        return view('front.cases.list', compact(
+        return view('front.cases.index', compact(
             'articles',
             'categories',
             'currentCategory',

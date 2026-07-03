@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Article\Article;
 use App\Models\Article\ArticleCategory;
-use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
@@ -55,11 +54,8 @@ class ArticleController extends Controller
 
         $currentPage = $request->get('page', 1);
 
-        // 获取分类
+        // 分类用于侧边栏；即使为空，也允许总文章页渲染空状态
         $categories = ArticleCategory::withCount('articles')->get();
-        if($categories->isEmpty()){
-            abort(404);
-        }
 
         // 基础查询
         $query = Article::with(['category', 'user'])
@@ -70,10 +66,10 @@ class ArticleController extends Controller
         {
             $currentCategory = new ArticleCategory([
                 'id' => 0,
-                'name' => app()->getLocale() === 'zh' ? '全部文章' : (app()->getLocale() === 'nl' ? 'Alle artikelen' : 'All Articles'),
-                'seo_description' => app()->getLocale() === 'zh'
+                'name' => $locale === 'zh' ? '全部文章' : ($locale === 'nl' ? 'Alle artikelen' : 'All Articles'),
+                'seo_description' => $locale === 'zh'
                     ? '浏览荷兰净计量、太阳能回馈电价和家庭能源账单相关的全部文章。'
-                    : (app()->getLocale() === 'nl'
+                    : ($locale === 'nl'
                         ? 'Bekijk alle artikelen over de Nederlandse salderingsregeling, terugleververgoedingen en energierekeningen voor huishoudens.'
                         : 'Browse all articles about Dutch net metering, solar feed-in tariffs, and residential energy bills.'),
             ]);
@@ -143,6 +139,7 @@ class ArticleController extends Controller
         if ($category_name && 'all' != $category_name) {
             return route('article.category2', ['category_name' => $category_name]);
         }
+
         return route('articles');
     }
 

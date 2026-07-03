@@ -83,7 +83,7 @@ class NewsController extends Controller
                 ->first();
         }
 
-        return view('front.news.list', compact(
+        return view('front.news.index', compact(
             'articles',
             'categories',
             'currentCategory',

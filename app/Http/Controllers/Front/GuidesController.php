@@ -82,7 +82,7 @@ class GuidesController extends Controller
                 ->first();
         }
 
-        return view('front.guides.list', compact(
+        return view('front.guides.index', compact(
             'articles',
             'categories',
             'currentCategory',

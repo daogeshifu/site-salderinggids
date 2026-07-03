@@ -4,12 +4,93 @@
     $locale = app()->getLocale();
     $isZh = $locale === 'zh';
     $isNl = $locale === 'nl';
-    $siteName = config('site.name', 'SalderingGids');
+    $pageTitle = $isZh
+        ? 'SalderingGids 荷兰净计量专题页 | 规则、政府链接与计算器'
+        : ($isNl
+            ? 'SalderingGids | Nederlandse salderingsregeling, officiële links en calculator'
+            : 'SalderingGids | Dutch Net Metering Guide, Official Links, and Calculator');
+    $pageDescription = $isZh
+        ? '围绕荷兰净计量 salderingsregeling 的专题首页，包含 2027 政策变化说明、官方政府链接、回馈补偿信息、收益计算器与相关文章入口。'
+        : ($isNl
+            ? 'Een gerichte homepage over de Nederlandse salderingsregeling met uitleg over de wijziging in 2027, officiële overheidslinks, informatie over terugleververgoeding en een calculator.'
+            : 'A focused homepage about the Dutch salderingsregeling with the 2027 transition, official government links, feed-in compensation guidance, a calculator, and related articles.');
+    $pageKeywords = $isZh
+        ? 'salderingsregeling, 荷兰净计量, zonnepanelen, terugleververgoeding, 荷兰太阳能, 荷兰能源合同'
+        : ($isNl
+            ? 'salderingsregeling, zonnepanelen, terugleververgoeding, energiecontract, Nederlandse zonne-energie'
+            : 'salderingsregeling, Dutch net metering, zonnepanelen, terugleververgoeding, solar Netherlands, Dutch energy contract');
+    $homeText = $isZh ? [
+        'hero_summary_title' => '荷兰净计量首页解释模块',
+        'core_points_title' => '你需要先理解的 4 个核心点',
+        'core_points_intro' => '专题首页既要讲清规则，也要让用户直接进入政策变化、合同比较和收益计算。',
+        'calculator_heading' => '比较当前规则与 2027 年后的年度价值',
+        'production_label' => '年发电量 (kWh)',
+        'usage_label' => '家庭年用电量 (kWh)',
+        'self_consumption_label' => '即时自用比例 (%)',
+        'buy_rate_label' => '购电价 (EUR/kWh)',
+        'feed_in_rate_label' => '2027 后回馈补偿价 (EUR/kWh)',
+        'logic_label' => '计算逻辑：',
+        'logic_text' => '当前规则下，假设回馈电量可在年度内与剩余用电量优先抵扣；2027 年后，自发自用仍按购电价节省，外送电量按输入的回馈补偿价计算。该工具用于首页专题估算，不替代具体能源合同条款。',
+        'result_label' => '结果预览',
+        'result_heading' => '两种规则下的年度价值',
+        'current_regime_label' => '当前规则（到 2026-12-31）',
+        'future_regime_label' => '2027 之后',
+        'difference_label' => '年度差额',
+        'difference_hint' => '如果 2027 后的年度价值更低，通常说明提高自发自用比例和比较能源合同会更重要。',
+        'resources_heading' => '首页直接挂上权威来源',
+        'articles_heading' => '底部放相关文章入口',
+        'more_label' => '更多',
+        'empty_section' => '当前分类暂时还没有文章。',
+    ] : ($isNl ? [
+        'hero_summary_title' => 'Uitlegblok voor de homepage over salderen',
+        'core_points_title' => 'De 4 punten die iedere Nederlandse zonnepaneelbezitter eerst moet begrijpen',
+        'core_points_intro' => 'Een thematische homepage moet de regels helder uitleggen en bezoekers direct naar beleidswijzigingen, contractvergelijking en rendementschatting leiden.',
+        'calculator_heading' => 'Vergelijk je jaarlijkse waarde voor en na de wijziging in 2027',
+        'production_label' => 'Jaarlijkse zonneproductie (kWh)',
+        'usage_label' => 'Jaarlijks huishoudelijk verbruik (kWh)',
+        'self_consumption_label' => 'Direct eigen verbruik (%)',
+        'buy_rate_label' => 'Afnameprijs stroom (EUR/kWh)',
+        'feed_in_rate_label' => 'Terugleververgoeding na 2027 (EUR/kWh)',
+        'logic_label' => 'Rekenlogica:',
+        'logic_text' => 'Onder de huidige regels wordt aangenomen dat teruglevering eerst het resterende jaarverbruik compenseert. Na 2027 bespaart direct eigen verbruik nog steeds de afnameprijs, terwijl teruglevering wordt gewaardeerd tegen de ingevoerde vergoeding. Dit is een schatting voor de homepage en vervangt geen contractvoorwaarden van leveranciers.',
+        'result_label' => 'Resultaat',
+        'result_heading' => 'Je jaarlijkse waarde onder beide regelsets',
+        'current_regime_label' => 'Huidige regeling (tot 2026-12-31)',
+        'future_regime_label' => 'Na 2027',
+        'difference_label' => 'Verschil per jaar',
+        'difference_hint' => 'Als de jaarlijkse waarde na 2027 lager uitvalt, worden direct eigen verbruik en contractvergelijking nog belangrijker.',
+        'resources_heading' => 'Zet de gezaghebbende bronnen direct op de homepage',
+        'articles_heading' => 'Sluit de homepage af met ingangen naar verdiepende artikelen',
+        'more_label' => 'Meer',
+        'empty_section' => 'In deze sectie zijn nog geen artikelen gepubliceerd.',
+    ] : [
+        'hero_summary_title' => 'Homepage rule summary for the Dutch market',
+        'core_points_title' => 'The 4 points every Dutch solar owner should understand first',
+        'core_points_intro' => 'A topic homepage should explain the rules clearly and move readers straight into policy changes, contract comparison, and payback estimation.',
+        'calculator_heading' => 'Compare annual value before and after the 2027 transition',
+        'production_label' => 'Annual solar production (kWh)',
+        'usage_label' => 'Annual household usage (kWh)',
+        'self_consumption_label' => 'Self-consumption share (%)',
+        'buy_rate_label' => 'Import electricity price (EUR/kWh)',
+        'feed_in_rate_label' => 'Post-2027 feed-in compensation (EUR/kWh)',
+        'logic_label' => 'Calculation logic:',
+        'logic_text' => 'Under the current regime, exported electricity is assumed to offset remaining annual usage first. After 2027, self-consumed solar still saves the import rate, while exported electricity is valued at the feed-in compensation you enter. This is a homepage estimator, not a substitute for specific supplier contract terms.',
+        'result_label' => 'Result preview',
+        'result_heading' => 'Your yearly value under both rule sets',
+        'current_regime_label' => 'Current regime (until 2026-12-31)',
+        'future_regime_label' => 'After 2027',
+        'difference_label' => 'Difference per year',
+        'difference_hint' => 'If the post-2027 value is lower, raising self-consumption and comparing supplier contracts will matter more.',
+        'resources_heading' => 'Put the authoritative sources directly on the homepage',
+        'articles_heading' => 'Finish the homepage with article entry points',
+        'more_label' => 'More',
+        'empty_section' => 'This section does not have published articles yet.',
+    ]);
 @endphp
 
-@section('title', $isZh ? 'SalderingGids 荷兰净计量专题页 | 规则、政府链接与计算器' : ($isNl ? 'SalderingGids | Nederlandse salderingsregeling, officiële links en calculator' : 'SalderingGids | Dutch Net Metering Guide, Official Links, and Calculator'))
-@section('description', $isZh ? '围绕荷兰净计量 salderingsregeling 的专题首页，包含 2027 政策变化说明、官方政府链接、回馈补偿信息、收益计算器与相关文章入口。' : ($isNl ? 'Een gerichte homepage over de Nederlandse salderingsregeling met uitleg over de wijziging in 2027, officiële overheidslinks, informatie over terugleververgoeding en een calculator.' : 'A focused homepage about the Dutch salderingsregeling with the 2027 transition, official government links, feed-in compensation guidance, a calculator, and related articles.'))
-@section('keywords', $isZh ? 'salderingsregeling, 荷兰净计量, zonnepanelen, terugleververgoeding, 荷兰太阳能, 荷兰能源合同' : ($isNl ? 'salderingsregeling, zonnepanelen, terugleververgoeding, energiecontract, Nederlandse zonne-energie' : 'salderingsregeling, Dutch net metering, zonnepanelen, terugleververgoeding, solar Netherlands, Dutch energy contract'))
+@section('title', $pageTitle)
+@section('description', $pageDescription)
+@section('keywords', $pageKeywords)
 
 @push('styles')
 <style>
@@ -72,7 +153,7 @@
                     <div>
                         <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#2f73ff]">{{ $pageCopy['facts_title'] }}</p>
                         <h2 class="mt-2 text-2xl font-black tracking-tight text-[#12315f]">
-                            {{ $isZh ? '荷兰净计量首页解释模块' : ($isNl ? 'Uitlegblok voor de homepage over salderen' : 'Homepage rule summary for the Dutch market') }}
+                            {{ $homeText['hero_summary_title'] }}
                         </h2>
                     </div>
                     <span class="flex size-12 items-center justify-center rounded-2xl bg-[#edf4ff] text-[#2f73ff]">
@@ -103,10 +184,10 @@
         <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div>
                 <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#2f73ff]">{{ $pageCopy['facts_title'] }}</p>
-                <h2 class="mt-2 text-3xl font-black tracking-tight text-[#12315f]">{{ $isZh ? '你需要先理解的 4 个核心点' : ($isNl ? 'De 4 punten die iedere Nederlandse zonnepaneelbezitter eerst moet begrijpen' : 'The 4 points every Dutch solar owner should understand first') }}</h2>
+                <h2 class="mt-2 text-3xl font-black tracking-tight text-[#12315f]">{{ $homeText['core_points_title'] }}</h2>
             </div>
             <p class="max-w-xl text-sm leading-6 text-[#5f7698]">
-                {{ $isZh ? '专题首页既要讲清规则，也要让用户直接进入政策变化、合同比较和收益计算。' : ($isNl ? 'Een thematische homepage moet de regels helder uitleggen en bezoekers direct naar beleidswijzigingen, contractvergelijking en rendementschatting leiden.' : 'A topic homepage should explain the rules clearly and move readers straight into policy changes, contract comparison, and payback estimation.') }}
+                {{ $homeText['core_points_intro'] }}
             </p>
         </div>
 
@@ -144,62 +225,58 @@
             <div class="grid gap-0 lg:grid-cols-[minmax(0,1fr)_420px]">
                 <div class="p-6 md:p-8">
                     <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#2f73ff]">{{ $pageCopy['calculator_title'] }}</p>
-                    <h2 class="mt-2 text-3xl font-black tracking-tight text-[#12315f]">{{ $isZh ? '比较当前规则与 2027 年后的年度价值' : ($isNl ? 'Vergelijk je jaarlijkse waarde voor en na de wijziging in 2027' : 'Compare annual value before and after the 2027 transition') }}</h2>
+                    <h2 class="mt-2 text-3xl font-black tracking-tight text-[#12315f]">{{ $homeText['calculator_heading'] }}</h2>
                     <p class="mt-4 max-w-2xl text-sm leading-7 text-[#5f7698]">{{ $pageCopy['calculator_description'] }}</p>
 
                     <div class="mt-8 grid gap-5 md:grid-cols-2">
                         <label class="block">
-                            <span class="mb-2 block text-sm font-semibold text-[#12315f]">{{ $isZh ? '年发电量 (kWh)' : ($isNl ? 'Jaarlijkse zonneproductie (kWh)' : 'Annual solar production (kWh)') }}</span>
+                            <span class="mb-2 block text-sm font-semibold text-[#12315f]">{{ $homeText['production_label'] }}</span>
                             <input id="annual-production" type="number" min="0" step="50" value="{{ $calculatorDefaults['annual_production'] }}" class="h-12 w-full rounded-2xl border border-[#dbe4f0] bg-[#fbfdff] px-4 text-[#12315f] focus:border-[#2f73ff] focus:ring-[#2f73ff]" />
                         </label>
                         <label class="block">
-                            <span class="mb-2 block text-sm font-semibold text-[#12315f]">{{ $isZh ? '家庭年用电量 (kWh)' : ($isNl ? 'Jaarlijks huishoudelijk verbruik (kWh)' : 'Annual household usage (kWh)') }}</span>
+                            <span class="mb-2 block text-sm font-semibold text-[#12315f]">{{ $homeText['usage_label'] }}</span>
                             <input id="annual-usage" type="number" min="0" step="50" value="{{ $calculatorDefaults['annual_usage'] }}" class="h-12 w-full rounded-2xl border border-[#dbe4f0] bg-[#fbfdff] px-4 text-[#12315f] focus:border-[#2f73ff] focus:ring-[#2f73ff]" />
                         </label>
                         <label class="block">
-                            <span class="mb-2 block text-sm font-semibold text-[#12315f]">{{ $isZh ? '即时自用比例 (%)' : ($isNl ? 'Direct eigen verbruik (%)' : 'Self-consumption share (%)') }}</span>
+                            <span class="mb-2 block text-sm font-semibold text-[#12315f]">{{ $homeText['self_consumption_label'] }}</span>
                             <input id="self-consumption" type="number" min="0" max="100" step="1" value="{{ $calculatorDefaults['self_consumption'] }}" class="h-12 w-full rounded-2xl border border-[#dbe4f0] bg-[#fbfdff] px-4 text-[#12315f] focus:border-[#2f73ff] focus:ring-[#2f73ff]" />
                         </label>
                         <label class="block">
-                            <span class="mb-2 block text-sm font-semibold text-[#12315f]">{{ $isZh ? '购电价 (EUR/kWh)' : ($isNl ? 'Afnameprijs stroom (EUR/kWh)' : 'Import electricity price (EUR/kWh)') }}</span>
+                            <span class="mb-2 block text-sm font-semibold text-[#12315f]">{{ $homeText['buy_rate_label'] }}</span>
                             <input id="buy-rate" type="number" min="0" step="0.01" value="{{ $calculatorDefaults['buy_rate'] }}" class="h-12 w-full rounded-2xl border border-[#dbe4f0] bg-[#fbfdff] px-4 text-[#12315f] focus:border-[#2f73ff] focus:ring-[#2f73ff]" />
                         </label>
                         <label class="block md:col-span-2">
-                            <span class="mb-2 block text-sm font-semibold text-[#12315f]">{{ $isZh ? '2027 后回馈补偿价 (EUR/kWh)' : ($isNl ? 'Terugleververgoeding na 2027 (EUR/kWh)' : 'Post-2027 feed-in compensation (EUR/kWh)') }}</span>
+                            <span class="mb-2 block text-sm font-semibold text-[#12315f]">{{ $homeText['feed_in_rate_label'] }}</span>
                             <input id="feed-in-rate" type="number" min="0" step="0.01" value="{{ $calculatorDefaults['feed_in_rate'] }}" class="h-12 w-full rounded-2xl border border-[#dbe4f0] bg-[#fbfdff] px-4 text-[#12315f] focus:border-[#2f73ff] focus:ring-[#2f73ff]" />
                         </label>
                     </div>
 
                     <div class="mt-6 rounded-[1.5rem] border border-[#e6eef8] bg-[#f8fbff] p-5 text-sm leading-7 text-[#48617f]">
-                        <strong class="text-[#12315f]">{{ $isZh ? '计算逻辑：' : ($isNl ? 'Rekenlogica:' : 'Calculation logic:') }}</strong>
-                        {{ $isZh
-                            ? '当前规则下，假设回馈电量可在年度内与剩余用电量优先抵扣；2027 年后，自发自用仍按购电价节省，外送电量按输入的回馈补偿价计算。该工具用于首页专题估算，不替代具体能源合同条款。'
-                            : ($isNl
-                                ? 'Onder de huidige regels wordt aangenomen dat teruglevering eerst het resterende jaarverbruik compenseert. Na 2027 bespaart direct eigen verbruik nog steeds de afnameprijs, terwijl teruglevering wordt gewaardeerd tegen de ingevoerde vergoeding. Dit is een schatting voor de homepage en vervangt geen contractvoorwaarden van leveranciers.'
-                                : 'Under the current regime, exported electricity is assumed to offset remaining annual usage first. After 2027, self-consumed solar still saves the import rate, while exported electricity is valued at the feed-in compensation you enter. This is a homepage estimator, not a substitute for specific supplier contract terms.')) }}
+                        <strong class="text-[#12315f]">{{ $homeText['logic_label'] }}</strong>
+                        {{ $homeText['logic_text'] }}
                     </div>
                 </div>
 
                 <aside class="result-panel p-6 text-white md:p-8">
-                    <p class="text-xs font-bold uppercase tracking-[0.2em] text-blue-100/75">{{ $isZh ? '结果预览' : ($isNl ? 'Resultaat' : 'Result preview') }}</p>
-                    <h3 class="mt-2 text-2xl font-black tracking-tight">{{ $isZh ? '两种规则下的年度价值' : ($isNl ? 'Je jaarlijkse waarde onder beide regelsets' : 'Your yearly value under both rule sets') }}</h3>
+                    <p class="text-xs font-bold uppercase tracking-[0.2em] text-blue-100/75">{{ $homeText['result_label'] }}</p>
+                    <h3 class="mt-2 text-2xl font-black tracking-tight">{{ $homeText['result_heading'] }}</h3>
 
                     <div class="mt-8 space-y-4">
                         <div class="rounded-[1.5rem] border border-white/10 bg-white/5 p-5">
-                            <p class="text-xs uppercase tracking-[0.18em] text-blue-100/70">{{ $isZh ? '当前规则（到 2026-12-31）' : ($isNl ? 'Huidige regeling (tot 2026-12-31)' : 'Current regime (until 2026-12-31)') }}</p>
+                            <p class="text-xs uppercase tracking-[0.18em] text-blue-100/70">{{ $homeText['current_regime_label'] }}</p>
                             <p id="current-value" class="mt-3 text-4xl font-black">EUR 0</p>
                             <p id="current-detail" class="mt-3 text-sm leading-6 text-blue-100/80"></p>
                         </div>
                         <div class="rounded-[1.5rem] border border-white/10 bg-white/5 p-5">
-                            <p class="text-xs uppercase tracking-[0.18em] text-blue-100/70">{{ $isZh ? '2027 之后' : ($isNl ? 'Na 2027' : 'After 2027') }}</p>
+                            <p class="text-xs uppercase tracking-[0.18em] text-blue-100/70">{{ $homeText['future_regime_label'] }}</p>
                             <p id="future-value" class="mt-3 text-4xl font-black">EUR 0</p>
                             <p id="future-detail" class="mt-3 text-sm leading-6 text-blue-100/80"></p>
                         </div>
                         <div class="rounded-[1.5rem] border border-[#6aa7ff]/30 bg-[#6aa7ff]/10 p-5">
-                            <p class="text-xs uppercase tracking-[0.18em] text-blue-100/70">{{ $isZh ? '年度差额' : ($isNl ? 'Verschil per jaar' : 'Difference per year') }}</p>
+                            <p class="text-xs uppercase tracking-[0.18em] text-blue-100/70">{{ $homeText['difference_label'] }}</p>
                             <p id="difference-value" class="mt-3 text-3xl font-black">EUR 0</p>
                             <p class="mt-2 text-sm leading-6 text-blue-100/80">
-                                {{ $isZh ? '如果 2027 后的年度价值更低，通常说明提高自发自用比例和比较能源合同会更重要。' : ($isNl ? 'Als de jaarlijkse waarde na 2027 lager uitvalt, worden direct eigen verbruik en contractvergelijking nog belangrijker.' : 'If the post-2027 value is lower, raising self-consumption and comparing supplier contracts will matter more.') }}
+                                {{ $homeText['difference_hint'] }}
                             </p>
                         </div>
                     </div>
@@ -212,7 +289,7 @@
         <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div>
                 <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#2f73ff]">{{ $pageCopy['resources_title'] }}</p>
-                <h2 class="mt-2 text-3xl font-black tracking-tight text-[#12315f]">{{ $isZh ? '首页直接挂上权威来源' : ($isNl ? 'Zet de gezaghebbende bronnen direct op de homepage' : 'Put the authoritative sources directly on the homepage') }}</h2>
+                <h2 class="mt-2 text-3xl font-black tracking-tight text-[#12315f]">{{ $homeText['resources_heading'] }}</h2>
             </div>
             <p class="max-w-xl text-sm leading-6 text-[#5f7698]">{{ $pageCopy['resources_description'] }}</p>
         </div>
@@ -238,7 +315,7 @@
         <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div>
                 <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#2f73ff]">{{ $pageCopy['articles_title'] }}</p>
-                <h2 class="mt-2 text-3xl font-black tracking-tight text-[#12315f]">{{ $isZh ? '底部放相关文章入口' : ($isNl ? 'Sluit de homepage af met ingangen naar verdiepende artikelen' : 'Finish the homepage with article entry points') }}</h2>
+                <h2 class="mt-2 text-3xl font-black tracking-tight text-[#12315f]">{{ $homeText['articles_heading'] }}</h2>
             </div>
             <a href="{{ route('articles') }}" class="text-sm font-semibold text-[#2f73ff] transition-colors hover:text-[#12315f]">{{ $pageCopy['browse_all'] }}</a>
         </div>
@@ -257,7 +334,7 @@
                 <div>
                     <div class="mb-5 flex items-center justify-between">
                         <h3 class="text-xl font-black text-[#12315f]">{{ $section['title'] }}</h3>
-                        <a href="{{ $section['route'] }}" class="text-sm font-semibold text-[#2f73ff]">{{ $isZh ? '更多' : ($isNl ? 'Meer' : 'More') }}</a>
+                        <a href="{{ $section['route'] }}" class="text-sm font-semibold text-[#2f73ff]">{{ $homeText['more_label'] }}</a>
                     </div>
 
                     <div class="space-y-4">
@@ -276,7 +353,7 @@
                             </article>
                         @empty
                             <div class="rounded-[1.75rem] border border-dashed border-[#dbe4f0] bg-[#fbfdff] p-6 text-sm leading-6 text-[#5f7698]">
-                                {{ $isZh ? '当前分类暂时还没有文章。' : ($isNl ? 'In deze sectie zijn nog geen artikelen gepubliceerd.' : 'This section does not have published articles yet.') }}
+                                {{ $homeText['empty_section'] }}
                             </div>
                         @endforelse
                     </div>

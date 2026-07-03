@@ -21,28 +21,6 @@ class IndexController extends Controller
         $baseQuery = Article::with(['category', 'user'])
             ->forFrontendLocale($locale);
 
-        $featuredArticles = (clone $baseQuery)
-            ->orderByDesc('view_count')
-            ->orderByDesc('id')
-            ->take(3)
-            ->get();
-
-        $sidebarArticles = (clone $baseQuery)
-            ->orderByDesc('id')
-            ->take(5)
-            ->get();
-
-        $popularArticles = (clone $baseQuery)
-            ->orderByDesc('view_count')
-            ->orderByDesc('id')
-            ->take(6)
-            ->get();
-
-        $latestArticles = (clone $baseQuery)
-            ->orderByDesc('id')
-            ->take(6)
-            ->get();
-
         $newsCategory = ArticleCategory::where('name', 'news')->first();
         $guidesCategory = ArticleCategory::where('name', 'guides')->first();
         $casesCategory = ArticleCategory::where('name', 'cases')->first();
@@ -57,12 +35,6 @@ class IndexController extends Controller
             ? (clone $baseQuery)->where('category_id', $casesCategory->id)->orderByDesc('id')->take(3)->get()
             : collect();
 
-        $relatedArticles = (clone $baseQuery)
-            ->orderByDesc('id')
-            ->take(6)
-            ->get();
-
-        $categories = ArticleCategory::withCount('articles')->get();
         $officialLinks = collect(config('site.official_links', []))->map(function ($link) use ($locale) {
             return [
                 'title' => $link['title'][$locale] ?? $link['title']['en'],
@@ -202,15 +174,9 @@ class IndexController extends Controller
 
         return view('front.index.index', [
             'navbar' => 'index',
-            'featuredArticles' => $featuredArticles,
-            'sidebarArticles' => $sidebarArticles,
-            'popularArticles' => $popularArticles,
-            'latestArticles' => $latestArticles,
             'newsArticles' => $newsArticles,
             'guidesArticles' => $guidesArticles,
             'casesArticles' => $casesArticles,
-            'relatedArticles' => $relatedArticles,
-            'categories' => $categories,
             'officialLinks' => $officialLinks,
             'pageCopy' => $pageCopy,
             'factCards' => $factCards,
