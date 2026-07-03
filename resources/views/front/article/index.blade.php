@@ -3,6 +3,17 @@
 @php
     $pageTitle = $currentCategory->name . ' - ' . __('article.blog_title');
     $pageDescription = ($currentCategory->seo_description ?? __('article.seo_description'));
+    $isZh = app()->getLocale() === 'zh';
+    $isNl = app()->getLocale() === 'nl';
+    $clearSearchUrl = $currentCategory->id ? route('article.category2', $currentCategory->name) : route('articles');
+    $resourceWidgetTitle = $isZh
+        ? '净计量官方来源'
+        : ($isNl ? 'Officiele bronnen over salderen' : 'Official net metering sources');
+    $resourceWidgetDescription = $isZh
+        ? '把法规和监管链接放在文章列表页侧边栏，方便用户一边看内容一边核验规则。'
+        : ($isNl
+            ? 'Zet regelgevende en officiele links in de zijbalk zodat lezers claims direct kunnen controleren tijdens het lezen.'
+            : 'Keep the regulator and government links in the sidebar so readers can validate rules while browsing articles.');
 
     // 如果是第2页及以上，在标题和描述中添加页码
     if (isset($currentPage) && $currentPage > 1) {
@@ -60,7 +71,7 @@
                 <div class="flex-1">
                     <span>{{ __('article.search_results_for') }} "<strong>{{ $search }}</strong>" - {{ $articles->total() }} {{ __('article.results_found') }}</span>
                 </div>
-                <a href="{{ route('article.category2', $currentCategory->name) }}" class="text-primary font-medium text-sm hover:underline">{{ __('article.clear_search') }}</a>
+                <a href="{{ $clearSearchUrl }}" class="text-primary font-medium text-sm hover:underline">{{ __('article.clear_search') }}</a>
             </div>
             @endif
 
@@ -267,10 +278,8 @@
 
             @include('front.partials.site-resource-widget', [
                 'limit' => 3,
-                'widgetTitle' => app()->getLocale() === 'zh' ? '净计量官方来源' : 'Official net metering sources',
-                'widgetDescription' => app()->getLocale() === 'zh'
-                    ? '把法规和监管链接放在文章列表页侧边栏，方便用户一边看内容一边核验规则。'
-                    : 'Keep the regulator and government links in the sidebar so readers can validate rules while browsing articles.',
+                'widgetTitle' => $resourceWidgetTitle,
+                'widgetDescription' => $resourceWidgetDescription,
             ])
 
             @include('front.partials.calculator-cta')

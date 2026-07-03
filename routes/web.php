@@ -38,10 +38,8 @@ Route::group([
     Route::group(['middleware' => ['web']], function () {
         // 首页
         Route::get('/', [IndexController::class, 'index'])->name('index');
-//        Route::get('/index', [IndexController::class, 'in dex'])->name('page.index');
 
-
-            // 为了保持向后兼容，保留原有的路由别名
+        // 为了保持向后兼容，保留原有的路由别名
         Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
         Route::post('/login', [LoginController::class, 'login'])->name('login.post');
         Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -57,10 +55,6 @@ Route::group([
         Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 
         // 静态页面
-   
-        Route::get('/', [IndexController::class, 'index'])->name('index');
-
-
         Route::get('pricing', [IndexController::class, 'pricing'])->name('pricing');
         Route::get('price', [IndexController::class, 'price'])->name('price');
 
@@ -100,12 +94,9 @@ Route::group([
         Route::get('/article', [FrontArticleController::class, 'index'])->name('articles');
         Route::get('/article/page/{page}', [FrontArticleController::class, 'index_page'])->name('article.page')->where('page', '[0-9]+');
         Route::get('/article/{category_name}/page/{page}', [FrontArticleController::class, 'index_category_page'])->name('article.category.page')->where('page', '[0-9]+');
-//        Route::get('/article/{category_name}', [FrontArticleController::class, 'index'])->name('article.category');
-//
         Route::get('/{category_name}/{link}.html', [FrontArticleController::class, 'detail'])->name('article.detail.show');
         Route::get('/{category_name}/page/{page}', [FrontArticleController::class, 'index_category_page'])->name('article.category.page2')->where('page', '[0-9]+');
         Route::get('/{category_name}', [FrontArticleController::class, 'index'])->name('article.category2');
-//
 
         // 浏览量/阅读量
         Route::post('/article/{article}/view', [FrontArticleController::class, 'view'])->name('article.view');
