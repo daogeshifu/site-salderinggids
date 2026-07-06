@@ -447,10 +447,14 @@
 
                     @include('front.partials.site-resource-widget', [
                         'limit' => 3,
-                        'widgetTitle' => app()->getLocale() === 'zh' ? '净计量官方来源' : 'Official net metering sources',
+                        'widgetTitle' => app()->getLocale() === 'zh'
+                            ? '净计量官方来源'
+                            : (app()->getLocale() === 'nl' ? 'Officiele bronnen over salderen' : 'Official net metering sources'),
                         'widgetDescription' => app()->getLocale() === 'zh'
                             ? '指南文章旁边放官方来源，可以提升内容可信度和专题完整性。'
-                            : 'Guides become more useful when readers can jump straight to the official sources from the sidebar.',
+                            : (app()->getLocale() === 'nl'
+                                ? 'Gidsen worden sterker wanneer lezers vanuit de zijbalk direct naar de officiele bronnen kunnen springen.'
+                                : 'Guides become more useful when readers can jump straight to the official sources from the sidebar.'),
                     ])
 
                     @include('front.partials.calculator-cta')
@@ -461,8 +465,11 @@
 </main>
 @endsection
 
-@push('scripts')
+@push('schema')
 @include('front.partials.article-structured-data', ['sectionKey' => 'guides'])
+@endpush
+
+@push('scripts')
 @include('front.partials.author-bio-toggle-script')
 
 <script>

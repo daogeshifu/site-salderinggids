@@ -10,9 +10,13 @@
         return [
             'title' => $link['title'][$locale] ?? $link['title']['en'],
             'description' => $link['description'][$locale] ?? $link['description']['en'],
+            'source' => $link['source'] ?? null,
+            'updated_at' => $link['updated_at'] ?? null,
             'url' => $link['url'],
         ];
     });
+    $officialLabel = $locale === 'zh' ? '官方来源' : ($locale === 'nl' ? 'Officiele bron' : 'Official source');
+    $updatedLabel = $locale === 'zh' ? '更新于' : ($locale === 'nl' ? 'Bijgewerkt' : 'Updated');
 @endphp
 
 <div class="rounded-xl border border-[#dbe4f0] bg-white p-6 shadow-sm">
@@ -29,7 +33,16 @@
     <div class="mt-5 space-y-4">
         @foreach($widgetLinks as $link)
             <a href="{{ $link['url'] }}" target="_blank" rel="noopener noreferrer" class="block rounded-2xl border border-[#e8eef6] px-4 py-4 transition-all hover:border-[#c7dafd] hover:bg-[#f8fbff]">
-                <p class="text-sm font-semibold text-[#12315f]">{{ $link['title'] }}</p>
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="rounded-full bg-[#edf4ff] px-2.5 py-1 text-[11px] font-semibold text-[#2f73ff]">{{ $officialLabel }}</span>
+                    @if($link['source'])
+                        <span class="text-[11px] font-medium uppercase tracking-[0.14em] text-[#7a8faa]">{{ $link['source'] }}</span>
+                    @endif
+                    @if($link['updated_at'])
+                        <span class="text-[11px] text-[#7a8faa]">{{ $updatedLabel }} {{ $link['updated_at'] }}</span>
+                    @endif
+                </div>
+                <p class="mt-3 text-sm font-semibold text-[#12315f]">{{ $link['title'] }}</p>
                 <p class="mt-1 text-xs leading-5 text-[#5f7698]">{{ $link['description'] }}</p>
             </a>
         @endforeach

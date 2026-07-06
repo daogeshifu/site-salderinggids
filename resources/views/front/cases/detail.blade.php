@@ -447,10 +447,14 @@
 
                     @include('front.partials.site-resource-widget', [
                         'limit' => 3,
-                        'widgetTitle' => app()->getLocale() === 'zh' ? '净计量官方来源' : 'Official net metering sources',
+                        'widgetTitle' => app()->getLocale() === 'zh'
+                            ? '净计量官方来源'
+                            : (app()->getLocale() === 'nl' ? 'Officiele bronnen over salderen' : 'Official net metering sources'),
                         'widgetDescription' => app()->getLocale() === 'zh'
                             ? '案例与市场观察旁边放政策来源，有助于用户区分事实与市场解读。'
-                            : 'Pair market analysis with the official sources so readers can separate policy facts from commentary.',
+                            : (app()->getLocale() === 'nl'
+                                ? 'Zet bij analyse en cases de officiele bronnen ernaast, zodat lezers feiten en commentaar beter uit elkaar houden.'
+                                : 'Pair market analysis with the official sources so readers can separate policy facts from commentary.'),
                     ])
 
                     @include('front.partials.calculator-cta')
@@ -461,8 +465,11 @@
 </main>
 @endsection
 
-@push('scripts')
+@push('schema')
 @include('front.partials.article-structured-data', ['sectionKey' => 'cases'])
+@endpush
+
+@push('scripts')
 @include('front.partials.author-bio-toggle-script')
 
 <script>

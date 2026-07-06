@@ -288,3 +288,13 @@
 </main>
 
 @endsection
+
+@push('schema')
+@include('front.partials.collection-structured-data', [
+    'sectionKey' => 'article',
+    'items' => $articles,
+    'collectionTitle' => $pageTitle,
+    'collectionDescription' => $pageDescription,
+    'collectionUrl' => request()->url(),
+])
+@endpush

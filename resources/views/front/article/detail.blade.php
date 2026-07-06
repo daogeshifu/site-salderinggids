@@ -449,10 +449,14 @@
 
                     @include('front.partials.site-resource-widget', [
                         'limit' => 3,
-                        'widgetTitle' => app()->getLocale() === 'zh' ? '净计量官方来源' : 'Official net metering sources',
+                        'widgetTitle' => app()->getLocale() === 'zh'
+                            ? '净计量官方来源'
+                            : (app()->getLocale() === 'nl' ? 'Officiele bronnen over salderen' : 'Official net metering sources'),
                         'widgetDescription' => app()->getLocale() === 'zh'
                             ? '如果文章里提到 2027 政策变化、回馈补偿或智能电表，右侧直接给出官方出处。'
-                            : 'When an article discusses the 2027 transition, feed-in compensation, or smart meter rules, keep the official sources close by.',
+                            : (app()->getLocale() === 'nl'
+                                ? 'Wanneer een artikel de wijziging in 2027, terugleververgoeding of slimme meters noemt, staan de officiele bronnen hier direct naast.'
+                                : 'When an article discusses the 2027 transition, feed-in compensation, or smart meter rules, keep the official sources close by.'),
                     ])
 
                     @include('front.partials.calculator-cta')
@@ -462,6 +466,10 @@
     </div>
 </main>
 @endsection
+
+@push('schema')
+@include('front.partials.article-structured-data', ['sectionKey' => 'article'])
+@endpush
 
 @push('scripts')
 @include('front.partials.author-bio-toggle-script')

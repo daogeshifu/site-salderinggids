@@ -51,4 +51,12 @@ class PagesController extends Controller
     {
         return view('front.pages.help');
     }
+
+    /**
+     * 2027 policy anchor page
+     */
+    public function salderingPolicy()
+    {
+        return view('front.pages.saldering-policy');
+    }
 }

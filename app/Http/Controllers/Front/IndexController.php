@@ -39,6 +39,8 @@ class IndexController extends Controller
             return [
                 'title' => $link['title'][$locale] ?? $link['title']['en'],
                 'description' => $link['description'][$locale] ?? $link['description']['en'],
+                'source' => $link['source'] ?? null,
+                'updated_at' => $link['updated_at'] ?? null,
                 'url' => $link['url'],
             ];
         });
@@ -48,7 +50,7 @@ class IndexController extends Controller
             'hero_title' => 'SalderingGids：帮你看懂荷兰净计量、2027 变化与回本逻辑',
             'hero_description' => '面向荷兰住宅用户的一站式净计量专题页，整合净计量规则、政府来源、回馈电价变化和一个可直接使用的收益计算器。',
             'hero_primary' => '立即计算',
-            'hero_secondary' => '查看官方政策',
+            'hero_secondary' => '先看 2027 政策事实',
             'highlights' => [
                 '截至 2026 年 12 月 31 日，家庭太阳能用户仍可按年度进行净计量。',
                 '从 2027 年 1 月 1 日起，净计量停止，超额回馈改为补偿机制。',
@@ -71,7 +73,7 @@ class IndexController extends Controller
             'hero_title' => 'SalderingGids helpt je de Nederlandse salderingsregeling, de wijziging in 2027 en je terugverdientijd te begrijpen',
             'hero_description' => 'Een gerichte landingspagina voor huishoudens in Nederland met duidelijke uitleg van de regels, officiële bronnen, praktische artikelen en een calculator voor het huidige en het post-2027 scenario.',
             'hero_primary' => 'Open de calculator',
-            'hero_secondary' => 'Bekijk officiële bronnen',
+            'hero_secondary' => 'Lees wat er echt verandert',
             'highlights' => [
                 'Huishoudens met zonnepanelen kunnen hun jaarlijkse teruglevering nog verrekenen tot en met 31 december 2026.',
                 'Vanaf 1 januari 2027 stopt de Nederlandse salderingsregeling en wordt teruglevering vergoed in plaats van volledig verrekend.',
@@ -94,7 +96,7 @@ class IndexController extends Controller
             'hero_title' => 'SalderingGids explains Dutch net metering, the 2027 change, and what it means for your solar payback',
             'hero_description' => 'A focused landing page for homeowners in the Netherlands with clear rule summaries, official sources, practical articles, and a calculator for today\'s and post-2027 scenarios.',
             'hero_primary' => 'Open the calculator',
-            'hero_secondary' => 'See official sources',
+            'hero_secondary' => 'Read the 2027 facts first',
             'highlights' => [
                 'Residential solar owners can still offset annual feed-in against consumption until December 31, 2026.',
                 'From January 1, 2027, the Dutch salderingsregeling ends and exported electricity is compensated instead of fully netted out.',

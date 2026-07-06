@@ -1,8 +1,6 @@
 User-agent: *
-Disallow: /fr/
-Disallow: /article/
-Disallow: /zh/article/
-Disallow: /*/article/
 Disallow: /admin/
 
-Sitemap: https://www.hellogeo.ai/sitemap.xml
+Allow: /
+
+Sitemap: https://salderinggids.nl/sitemap.xml

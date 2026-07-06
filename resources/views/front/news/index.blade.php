@@ -193,7 +193,9 @@
         <aside class="flex-1 flex flex-col gap-10">
             @include('front.partials.site-resource-widget', [
                 'limit' => 3,
-                'widgetTitle' => app()->getLocale() === 'zh' ? '净计量官方来源' : 'Official net metering sources',
+                'widgetTitle' => app()->getLocale() === 'zh'
+                    ? '净计量官方来源'
+                    : (app()->getLocale() === 'nl' ? 'Officiele bronnen over salderen' : 'Official net metering sources'),
             ])
 
             @include('front.partials.calculator-cta')
@@ -202,3 +204,13 @@
 </main>
 
 @endsection
+
+@push('schema')
+@include('front.partials.collection-structured-data', [
+    'sectionKey' => 'news',
+    'items' => $articles,
+    'collectionTitle' => __('lang.seo_news_title'),
+    'collectionDescription' => __('lang.seo_news_description'),
+    'collectionUrl' => request()->url(),
+])
+@endpush

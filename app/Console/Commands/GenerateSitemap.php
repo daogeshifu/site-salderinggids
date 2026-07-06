@@ -43,6 +43,7 @@ class GenerateSitemap extends Command
             ['path' => '/about', 'priority' => 0.7, 'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
             ['path' => '/contact', 'priority' => 0.6, 'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
             ['path' => '/help', 'priority' => 0.6, 'frequency' => Url::CHANGE_FREQUENCY_MONTHLY],
+            ['path' => '/salderingsregeling-2027', 'priority' => 0.95, 'frequency' => Url::CHANGE_FREQUENCY_WEEKLY],
             ['path' => '/terms', 'priority' => 0.4, 'frequency' => Url::CHANGE_FREQUENCY_YEARLY],
             ['path' => '/policy', 'priority' => 0.4, 'frequency' => Url::CHANGE_FREQUENCY_YEARLY],
         ];

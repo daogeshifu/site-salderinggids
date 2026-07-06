@@ -33,8 +33,9 @@
             <h3 class="text-sm font-bold uppercase tracking-[0.2em] text-blue-100/60">{{ $isZh ? '内容导航' : ($isNl ? 'Navigatie' : 'Navigation') }}</h3>
             <ul class="mt-4 space-y-3 text-sm text-blue-100/85">
                 <li><a class="transition-colors hover:text-white" href="{{ route('index') }}">{{ __('menu.home') }}</a></li>
-                <li><a class="transition-colors hover:text-white" href="{{ route('news') }}">News</a></li>
-                <li><a class="transition-colors hover:text-white" href="{{ route('guides') }}">Guides</a></li>
+                <li><a class="transition-colors hover:text-white" href="{{ route('saldering.policy') }}">{{ $isZh ? '2027 政策事实页' : ($isNl ? 'Feitenpagina 2027' : '2027 fact page') }}</a></li>
+                <li><a class="transition-colors hover:text-white" href="{{ route('news') }}">{{ $isZh ? '更新' : ($isNl ? 'Updates' : 'Updates') }}</a></li>
+                <li><a class="transition-colors hover:text-white" href="{{ route('guides') }}">{{ $isZh ? '指南' : ($isNl ? 'Gidsen' : 'Guides') }}</a></li>
                 <li><a class="transition-colors hover:text-white" href="{{ route('cases') }}">{{ $isZh ? '观察' : ($isNl ? 'Analyse' : 'Analysis') }}</a></li>
                 <li><a class="transition-colors hover:text-white" href="{{ route('index') }}#calculator">{{ $isZh ? '净计量计算器' : ($isNl ? 'Salderingscalculator' : 'Net metering calculator') }}</a></li>
             </ul>

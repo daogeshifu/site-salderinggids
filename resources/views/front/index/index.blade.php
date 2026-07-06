@@ -133,7 +133,7 @@
                     <a href="#calculator" class="inline-flex h-12 items-center justify-center rounded-2xl bg-[#12315f] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#0e294f]">
                         {{ $pageCopy['hero_primary'] }}
                     </a>
-                    <a href="#official-links" class="inline-flex h-12 items-center justify-center rounded-2xl border border-[#c7dafd] bg-white px-5 text-sm font-semibold text-[#12315f] transition-colors hover:bg-[#f7fbff]">
+                    <a href="{{ route('saldering.policy') }}" class="inline-flex h-12 items-center justify-center rounded-2xl border border-[#c7dafd] bg-white px-5 text-sm font-semibold text-[#12315f] transition-colors hover:bg-[#f7fbff]">
                         {{ $pageCopy['hero_secondary'] }}
                     </a>
                 </div>
@@ -220,6 +220,62 @@
         </div>
     </section>
 
+    <section class="mx-auto max-w-[1280px] px-6 py-4 lg:px-10">
+        @php
+            $topicSection = $isZh ? [
+                'eyebrow' => '整站规划',
+                'title' => '把流量先导向 4 个核心主题入口',
+                'description' => '首页不只负责解释规则，也要把用户分流到政策锚点、测算、解决方案和持续更新四个路径。',
+                'cards' => [
+                    ['title' => '2027 政策事实页', 'description' => '先确认 saldering 到底何时停止，避免把 2030 或 2031 误当成结束日期。', 'url' => route('saldering.policy')],
+                    ['title' => '收益计算器', 'description' => '比较 2026 规则与 2027 之后的年度价值差异。', 'url' => route('index') . '#calculator'],
+                    ['title' => '实用指南', 'description' => '继续看合同、白天用电、热水和 EV 充电等具体动作。', 'url' => route('guides')],
+                    ['title' => '政策与市场更新', 'description' => '持续跟踪监管表述、供应商补偿和市场变化。', 'url' => route('news')],
+                ],
+            ] : ($isNl ? [
+                'eyebrow' => 'Sitestructuur',
+                'title' => 'Leid bezoekers eerst naar 4 kerningangen',
+                'description' => 'De homepage moet niet alleen uitleg geven, maar bezoekers ook verdelen over feiten, rekentools, oplossingen en updates.',
+                'cards' => [
+                    ['title' => 'Feitenpagina 2027', 'description' => 'Bevestig eerst wanneer salderen echt stopt, zodat 2030 of 2031 niet verkeerd wordt gelezen als einddatum.', 'url' => route('saldering.policy')],
+                    ['title' => 'Salderingscalculator', 'description' => 'Vergelijk de jaarwaarde onder de huidige regels en het regime na 2027.', 'url' => route('index') . '#calculator'],
+                    ['title' => 'Praktische gidsen', 'description' => 'Ga verder met contracten, dagverbruik, warm water en EV-laden als concrete vervolgstappen.', 'url' => route('guides')],
+                    ['title' => 'Beleids- en marktupdates', 'description' => 'Volg wijzigingen in toezicht, leveranciersvoorwaarden en terugleververgoeding.', 'url' => route('news')],
+                ],
+            ] : [
+                'eyebrow' => 'Site plan',
+                'title' => 'Guide visitors through 4 core entry points',
+                'description' => 'The homepage should do more than explain the rules. It should route readers into facts, calculators, solutions, and ongoing updates.',
+                'cards' => [
+                    ['title' => '2027 fact page', 'description' => 'Confirm when Dutch net metering actually ends so 2030 or 2031 are not confused with the stop date.', 'url' => route('saldering.policy')],
+                    ['title' => 'Net metering calculator', 'description' => 'Compare yearly value under the current rules and the post-2027 regime.', 'url' => route('index') . '#calculator'],
+                    ['title' => 'Practical guides', 'description' => 'Move into contracts, daytime usage, hot water, and EV charging as next steps.', 'url' => route('guides')],
+                    ['title' => 'Policy and market updates', 'description' => 'Track regulatory wording, supplier terms, and feed-in compensation changes.', 'url' => route('news')],
+                ],
+            ]);
+        @endphp
+
+        <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div>
+                <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#2f73ff]">{{ $topicSection['eyebrow'] }}</p>
+                <h2 class="mt-2 text-3xl font-black tracking-tight text-[#12315f]">{{ $topicSection['title'] }}</h2>
+            </div>
+            <p class="max-w-xl text-sm leading-6 text-[#5f7698]">{{ $topicSection['description'] }}</p>
+        </div>
+
+        <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            @foreach($topicSection['cards'] as $card)
+                <a href="{{ $card['url'] }}" class="rounded-[2rem] border border-[#dbe4f0] bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:border-[#c6d8fb] hover:bg-[#fbfdff]">
+                    <span class="flex size-11 items-center justify-center rounded-2xl bg-[#edf4ff] text-[#2f73ff]">
+                        <span class="material-symbols-outlined text-[22px]">north_east</span>
+                    </span>
+                    <h3 class="mt-5 text-lg font-black leading-7 text-[#12315f]">{{ $card['title'] }}</h3>
+                    <p class="mt-3 text-sm leading-6 text-[#5f7698]">{{ $card['description'] }}</p>
+                </a>
+            @endforeach
+        </div>
+    </section>
+
     <section id="calculator" class="mx-auto max-w-[1280px] px-6 py-4 lg:px-10">
         <div class="calculator-card-shadow overflow-hidden rounded-[2rem] border border-[#dbe4f0] bg-white">
             <div class="grid gap-0 lg:grid-cols-[minmax(0,1fr)_420px]">
@@ -297,6 +353,14 @@
         <div class="grid gap-5 lg:grid-cols-2">
             @foreach($officialLinks as $link)
                 <a href="{{ $link['url'] }}" target="_blank" rel="noopener noreferrer" class="rounded-[2rem] border border-[#dbe4f0] bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:border-[#c6d8fb] hover:bg-[#fbfdff]">
+                    <div class="flex flex-wrap items-center gap-2">
+                        @if(!empty($link['source']))
+                            <span class="rounded-full bg-[#edf4ff] px-2.5 py-1 text-[11px] font-semibold text-[#2f73ff]">{{ $link['source'] }}</span>
+                        @endif
+                        @if(!empty($link['updated_at']))
+                            <span class="text-[11px] text-[#7a8faa]">{{ $isZh ? '更新于' : ($isNl ? 'Bijgewerkt' : 'Updated') }} {{ $link['updated_at'] }}</span>
+                        @endif
+                    </div>
                     <div class="flex items-start gap-4">
                         <span class="mt-1 flex size-11 items-center justify-center rounded-2xl bg-[#edf4ff] text-[#2f73ff]">
                             <span class="material-symbols-outlined text-[22px]">open_in_new</span>

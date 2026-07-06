@@ -4,6 +4,9 @@
     $isNl = $currentLocale === 'nl';
     $siteName = config('site.name', 'SalderingGids');
     $hubLabel = $isZh ? '荷兰净计量专题' : ($isNl ? 'Nederlandse salderingshub' : 'Dutch net metering hub');
+    $factsLabel = $isZh ? '政策事实' : ($isNl ? '2027 feiten' : '2027 facts');
+    $newsLabel = $isZh ? '更新' : ($isNl ? 'Updates' : 'Updates');
+    $guidesLabel = $isZh ? '指南' : ($isNl ? 'Gidsen' : 'Guides');
     $analysisLabel = $isZh ? '观察' : ($isNl ? 'Analyse' : 'Analysis');
     $calculatorLabel = $isZh ? '计算器' : ($isNl ? 'Calculator' : 'Calculator');
     $searchPlaceholder = $isZh ? '搜索净计量、回馈电价、能源合同…' : ($isNl ? 'Zoek op salderen, terugleververgoeding, contracten...' : 'Search salderen, feed-in tariffs, contracts...');
@@ -34,11 +37,14 @@
                 <a class="text-sm font-medium transition-colors hover:text-[#2f73ff] {{ request()->routeIs('index') ? 'text-[#2f73ff]' : 'text-[#12315f]' }}" href="{{ route('index') }}">
                     {{ __('menu.home') }}
                 </a>
+                <a class="text-sm font-medium transition-colors hover:text-[#2f73ff] {{ request()->routeIs('saldering.policy') ? 'text-[#2f73ff]' : 'text-[#12315f]' }}" href="{{ route('saldering.policy') }}">
+                    {{ $factsLabel }}
+                </a>
                 <a class="text-sm font-medium transition-colors hover:text-[#2f73ff] {{ request()->routeIs('news*') ? 'text-[#2f73ff]' : 'text-[#12315f]' }}" href="{{ route('news') }}">
-                    News
+                    {{ $newsLabel }}
                 </a>
                 <a class="text-sm font-medium transition-colors hover:text-[#2f73ff] {{ request()->routeIs('guides*') ? 'text-[#2f73ff]' : 'text-[#12315f]' }}" href="{{ route('guides') }}">
-                    Guides
+                    {{ $guidesLabel }}
                 </a>
                 <a class="text-sm font-medium transition-colors hover:text-[#2f73ff] {{ request()->routeIs('cases*') ? 'text-[#2f73ff]' : 'text-[#12315f]' }}" href="{{ route('cases') }}">
                     {{ $analysisLabel }}
@@ -87,8 +93,9 @@
 <div id="mobile-menu" class="hidden border-b border-[#d6dde8] bg-white px-6 py-4 md:hidden">
     <nav class="mx-auto flex max-w-[1280px] flex-col gap-3">
         <a class="text-sm font-medium text-[#12315f]" href="{{ route('index') }}">{{ __('menu.home') }}</a>
-        <a class="text-sm font-medium text-[#12315f]" href="{{ route('news') }}">News</a>
-        <a class="text-sm font-medium text-[#12315f]" href="{{ route('guides') }}">Guides</a>
+        <a class="text-sm font-medium text-[#12315f]" href="{{ route('saldering.policy') }}">{{ $factsLabel }}</a>
+        <a class="text-sm font-medium text-[#12315f]" href="{{ route('news') }}">{{ $newsLabel }}</a>
+        <a class="text-sm font-medium text-[#12315f]" href="{{ route('guides') }}">{{ $guidesLabel }}</a>
         <a class="text-sm font-medium text-[#12315f]" href="{{ route('cases') }}">{{ $analysisLabel }}</a>
         <a class="text-sm font-medium text-[#12315f]" href="{{ route('index') }}#calculator">{{ $calculatorLabel }}</a>
         <form action="{{ route('articles') }}" method="GET" class="mt-2 flex items-stretch rounded-xl border border-[#d6dde8] bg-[#f5f8fc] px-3">

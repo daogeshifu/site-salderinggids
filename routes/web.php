@@ -60,6 +60,7 @@ Route::group([
 
         Route::get('terms', [PagesController::class, 'terms'])->name('terms');
         Route::get('policy', [PagesController::class, 'policy'])->name('policy');
+        Route::get('salderingsregeling-2027', [PagesController::class, 'salderingPolicy'])->name('saldering.policy');
         Route::get('contact', [ContactController::class, 'contact'])->name('contact');
         Route::post('save-contact', [ContactController::class, 'submitForm'])->name('save-contact');
         Route::get('about', [PagesController::class, 'about'])->name('about');
