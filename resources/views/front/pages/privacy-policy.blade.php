@@ -179,3 +179,18 @@
     </div>
 </main>
 @endsection
+
+@push('schema')
+@include('front.partials.static-page-structured-data', [
+    'schemaPageType' => 'WebPage',
+    'schemaPageTitle' => __('privacy-policy.privacy_policy_title') . ' - ' . config('app.name'),
+    'schemaPageDescription' => __('privacy-policy.privacy_policy_description'),
+    'schemaPageUrl' => request()->url(),
+    'schemaLanguage' => app()->getLocale() === 'zh' ? 'zh-CN' : (app()->getLocale() === 'nl' ? 'nl-NL' : 'en'),
+    'schemaBreadcrumbs' => [
+        ['name' => app()->getLocale() === 'zh' ? '首页' : 'Home', 'item' => route('index')],
+        ['name' => app()->getLocale() === 'zh' ? '法律' : (app()->getLocale() === 'nl' ? 'Juridisch' : 'Legal')],
+        ['name' => __('privacy-policy.privacy_policy_title')],
+    ],
+])
+@endpush

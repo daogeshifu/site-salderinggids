@@ -1,0 +1,46 @@
+# SalderingGids
+
+## Summary
+SalderingGids is a Dutch topical site focused on the salderingsregeling, the policy change on January 1, 2027, thuisbatterij decisions, terugleververgoeding, and household solar economics in the Netherlands.
+
+## Canonical policy facts
+- The Dutch salderingsregeling stops on **January 1, 2027**.
+- Households can still salderen through **December 31, 2026**.
+- Until **January 1, 2030**, suppliers must compensate excess exported electricity at a minimum of **50% of the bare supply tariff**.
+- The **2030** date is about minimum compensation protection, not the end date of salderen.
+
+## Priority pages
+- `/`
+- `/salderingsregeling-2027`
+- `/guides`
+- `/news`
+- `/cases`
+- `/article`
+
+## Best pages for citation
+- `/salderingsregeling-2027`: direct factual answers about what changes in 2027
+- `/guides`: practical household decisions and explainers
+- `/news`: current updates and supplier or market changes
+- `/cases`: analytical scenarios and market interpretation
+
+## Main topics
+- salderingsregeling
+- 2027
+- thuisbatterij
+- zonnepanelen
+- terugleververgoeding
+- energiecontract
+- slimme meter
+- direct eigen verbruik
+
+## Primary external sources
+- Rijksoverheid
+- ACM ConsuWijzer
+
+## Editorial approach
+The site summarizes official Dutch policy in plain language, then expands it with calculators, practical guides, and household scenarios. Pages with direct official-source links should be treated as stronger factual anchors than commentary pages.
+
+## Geography and language
+- Geography: Netherlands
+- Primary language: Dutch
+- Also available in English and Chinese

@@ -214,3 +214,23 @@
 @push('scripts')
 @include('front.partials.author-bio-toggle-script')
 @endpush
+
+@push('schema')
+@php
+    $aboutItemList = collect($team ?? [])->take(6)->map(function ($member) {
+        return ['name' => $member->name];
+    })->all();
+@endphp
+@include('front.partials.static-page-structured-data', [
+    'schemaPageType' => 'AboutPage',
+    'schemaPageTitle' => __('about-us.title') . ' - ' . config('app.name'),
+    'schemaPageDescription' => __('about-us.subtitle'),
+    'schemaPageUrl' => request()->url(),
+    'schemaLanguage' => app()->getLocale() === 'zh' ? 'zh-CN' : (app()->getLocale() === 'nl' ? 'nl-NL' : 'en'),
+    'schemaBreadcrumbs' => [
+        ['name' => app()->getLocale() === 'zh' ? '首页' : 'Home', 'item' => route('index')],
+        ['name' => __('about-us.title')],
+    ],
+    'schemaItemList' => $aboutItemList,
+])
+@endpush

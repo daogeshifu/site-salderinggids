@@ -7,18 +7,18 @@
     $pageTitle = $isZh
         ? 'SalderingGids 荷兰净计量专题页 | 规则、政府链接与计算器'
         : ($isNl
-            ? 'SalderingGids | Nederlandse salderingsregeling, officiële links en calculator'
-            : 'SalderingGids | Dutch Net Metering Guide, Official Links, and Calculator');
+            ? 'SalderingGids | Salderingsregeling 2027, thuisbatterij en calculator'
+            : 'SalderingGids | Dutch Net Metering, 2027, Home Battery, and Calculator');
     $pageDescription = $isZh
-        ? '围绕荷兰净计量 salderingsregeling 的专题首页，包含 2027 政策变化说明、官方政府链接、回馈补偿信息、收益计算器与相关文章入口。'
+        ? '围绕荷兰净计量 salderingsregeling 的专题首页，包含 2027 政策变化说明、家用电池决策、官方政府链接、回馈补偿信息、收益计算器与相关文章入口。'
         : ($isNl
-            ? 'Een gerichte homepage over de Nederlandse salderingsregeling met uitleg over de wijziging in 2027, officiële overheidslinks, informatie over terugleververgoeding en een calculator.'
-            : 'A focused homepage about the Dutch salderingsregeling with the 2027 transition, official government links, feed-in compensation guidance, a calculator, and related articles.');
+            ? 'Een gerichte homepage over de Nederlandse salderingsregeling met uitleg over 2027, thuisbatterij, terugleververgoeding, officiële overheidslinks en een calculator.'
+            : 'A focused homepage about the Dutch salderingsregeling with the 2027 transition, home battery choices, official government links, feed-in compensation guidance, and a calculator.');
     $pageKeywords = $isZh
-        ? 'salderingsregeling, 荷兰净计量, zonnepanelen, terugleververgoeding, 荷兰太阳能, 荷兰能源合同'
+        ? 'salderingsregeling, 荷兰净计量, 2027, thuisbatterij, zonnepanelen, terugleververgoeding, 荷兰能源合同'
         : ($isNl
-            ? 'salderingsregeling, zonnepanelen, terugleververgoeding, energiecontract, Nederlandse zonne-energie'
-            : 'salderingsregeling, Dutch net metering, zonnepanelen, terugleververgoeding, solar Netherlands, Dutch energy contract');
+            ? 'salderingsregeling, 2027, thuisbatterij, zonnepanelen, terugleververgoeding, energiecontract, Nederlandse zonne-energie'
+            : 'salderingsregeling, 2027, home battery, zonnepanelen, terugleververgoeding, solar Netherlands, Dutch energy contract');
     $homeText = $isZh ? [
         'hero_summary_title' => '荷兰净计量首页解释模块',
         'core_points_title' => '你需要先理解的 4 个核心点',
@@ -505,4 +505,38 @@
         calculate();
     });
 </script>
+@endpush
+
+@push('schema')
+@php
+    $homeFaqItems = $isZh ? [
+        ['question' => '荷兰净计量会在 2027 年逐步取消到 2031 吗？', 'answer' => '不会。当前官方口径是 salderingsregeling 自 2027 年 1 月 1 日起停止。2030 相关的是最低回馈补偿保护期限。'],
+        ['question' => '2027 年后家用电池会更重要吗？', 'answer' => '通常会。因为 2027 年后回馈电量的价值低于购电价，自发自用比例越高，家用电池和负载转移的意义越大。'],
+        ['question' => '2027 年后我还可以把电卖回电网吗？', 'answer' => '可以。变化在于不再按年度 1:1 抵扣，而是由供应商支付回馈补偿。'],
+    ] : ($isNl ? [
+        ['question' => 'Wordt de salderingsregeling afgebouwd tot 2031?', 'answer' => 'Nee. De huidige officiele lijn is dat de salderingsregeling stopt op 1 januari 2027. De datum 2030 hoort bij de minimale terugleververgoeding.'],
+        ['question' => 'Wordt een thuisbatterij belangrijker na 2027?', 'answer' => 'Vaak wel. Omdat teruglevering na 2027 meestal minder waard is dan directe besparing op afname, wordt extra eigen verbruik via een thuisbatterij aantrekkelijker voor sommige huishoudens.'],
+        ['question' => 'Kun je na 2027 nog stroom terugleveren aan het net?', 'answer' => 'Ja. Wat verandert, is dat teruglevering niet meer volledig wordt gesaldeerd maar wordt vergoed volgens de contractvoorwaarden van de leverancier.'],
+    ] : [
+        ['question' => 'Is Dutch net metering phased out through 2031?', 'answer' => 'No. The current official position is that the salderingsregeling ends on January 1, 2027, while 2030 relates to minimum export compensation.'],
+        ['question' => 'Does a home battery matter more after 2027?', 'answer' => 'Often yes. When export compensation is lower than the retail import rate, higher self-consumption through a home battery can become more valuable for some households.'],
+        ['question' => 'Can households still export electricity after 2027?', 'answer' => 'Yes. The change is that exported electricity is compensated instead of being fully netted out annually.'],
+    ]);
+    $homeItemList = collect($officialLinks)->take(4)->map(function ($link) {
+        return ['name' => $link['title'], 'url' => $link['url']];
+    })->all();
+    $homeBreadcrumbs = [
+        ['name' => $isZh ? '首页' : 'Home', 'item' => route('index')],
+    ];
+@endphp
+@include('front.partials.static-page-structured-data', [
+    'schemaPageType' => 'WebPage',
+    'schemaPageTitle' => $pageTitle,
+    'schemaPageDescription' => $pageDescription,
+    'schemaPageUrl' => request()->url(),
+    'schemaLanguage' => $isZh ? 'zh-CN' : ($isNl ? 'nl-NL' : 'en'),
+    'schemaBreadcrumbs' => $homeBreadcrumbs,
+    'schemaFaqItems' => $homeFaqItems,
+    'schemaItemList' => $homeItemList,
+])
 @endpush

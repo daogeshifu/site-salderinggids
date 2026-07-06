@@ -236,3 +236,25 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 @endpush
+
+@push('schema')
+@php
+    $contactFaqItems = [
+        ['question' => __('contact-us.faq_1_question'), 'answer' => __('contact-us.faq_1_answer')],
+        ['question' => __('contact-us.faq_2_question'), 'answer' => __('contact-us.faq_2_answer')],
+        ['question' => __('contact-us.faq_3_question'), 'answer' => __('contact-us.faq_3_answer')],
+    ];
+@endphp
+@include('front.partials.static-page-structured-data', [
+    'schemaPageType' => 'ContactPage',
+    'schemaPageTitle' => __('contact-us.title') . ' - ' . config('app.name'),
+    'schemaPageDescription' => __('contact-us.contact_description'),
+    'schemaPageUrl' => request()->url(),
+    'schemaLanguage' => app()->getLocale() === 'zh' ? 'zh-CN' : (app()->getLocale() === 'nl' ? 'nl-NL' : 'en'),
+    'schemaBreadcrumbs' => [
+        ['name' => app()->getLocale() === 'zh' ? '首页' : 'Home', 'item' => route('index')],
+        ['name' => __('contact-us.title')],
+    ],
+    'schemaFaqItems' => $contactFaqItems,
+])
+@endpush

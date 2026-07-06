@@ -186,3 +186,17 @@
     </div>
 </main>
 @endsection
+
+@push('schema')
+@include('front.partials.static-page-structured-data', [
+    'schemaPageType' => 'WebPage',
+    'schemaPageTitle' => __('terms-of-service.terms_title') . ' - ' . config('app.name'),
+    'schemaPageDescription' => __('terms-of-service.terms_description'),
+    'schemaPageUrl' => request()->url(),
+    'schemaLanguage' => app()->getLocale() === 'zh' ? 'zh-CN' : (app()->getLocale() === 'nl' ? 'nl-NL' : 'en'),
+    'schemaBreadcrumbs' => [
+        ['name' => app()->getLocale() === 'zh' ? '首页' : 'Home', 'item' => route('index')],
+        ['name' => __('terms-of-service.terms_title')],
+    ],
+])
+@endpush

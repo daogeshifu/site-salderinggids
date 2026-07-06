@@ -48,7 +48,7 @@ class IndexController extends Controller
         $pageCopy = $isZh ? [
             'eyebrow' => '荷兰净计量专题',
             'hero_title' => 'SalderingGids：帮你看懂荷兰净计量、2027 变化与回本逻辑',
-            'hero_description' => '面向荷兰住宅用户的一站式净计量专题页，整合净计量规则、政府来源、回馈电价变化和一个可直接使用的收益计算器。',
+            'hero_description' => '面向荷兰住宅用户的一站式净计量专题页，整合净计量规则、政府来源、回馈电价变化、家用电池决策与一个可直接使用的收益计算器。',
             'hero_primary' => '立即计算',
             'hero_secondary' => '先看 2027 政策事实',
             'highlights' => [
@@ -70,8 +70,8 @@ class IndexController extends Controller
             'browse_all' => '浏览全部文章',
         ] : ($isNl ? [
             'eyebrow' => 'Nederlandse salderingshub',
-            'hero_title' => 'SalderingGids helpt je de Nederlandse salderingsregeling, de wijziging in 2027 en je terugverdientijd te begrijpen',
-            'hero_description' => 'Een gerichte landingspagina voor huishoudens in Nederland met duidelijke uitleg van de regels, officiële bronnen, praktische artikelen en een calculator voor het huidige en het post-2027 scenario.',
+            'hero_title' => 'SalderingGids helpt je salderingsregeling, 2027 en thuisbatterij in Nederland te begrijpen',
+            'hero_description' => 'Een gerichte landingspagina voor huishoudens in Nederland met duidelijke uitleg over de salderingsregeling, de wijziging in 2027, thuisbatterij-keuzes, officiële bronnen, praktische artikelen en een calculator voor het huidige en het post-2027 scenario.',
             'hero_primary' => 'Open de calculator',
             'hero_secondary' => 'Lees wat er echt verandert',
             'highlights' => [
@@ -93,8 +93,8 @@ class IndexController extends Controller
             'browse_all' => 'Bekijk alle artikelen',
         ] : [
             'eyebrow' => 'Dutch net metering hub',
-            'hero_title' => 'SalderingGids explains Dutch net metering, the 2027 change, and what it means for your solar payback',
-            'hero_description' => 'A focused landing page for homeowners in the Netherlands with clear rule summaries, official sources, practical articles, and a calculator for today\'s and post-2027 scenarios.',
+            'hero_title' => 'SalderingGids explains Dutch net metering, the 2027 change, and home battery decisions',
+            'hero_description' => 'A focused landing page for homeowners in the Netherlands with clear rule summaries, official sources, practical articles, home battery guidance, and a calculator for today\'s and post-2027 scenarios.',
             'hero_primary' => 'Open the calculator',
             'hero_secondary' => 'Read the 2027 facts first',
             'highlights' => [

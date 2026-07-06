@@ -157,3 +157,26 @@
     </div>
 </footer>
 @endsection
+
+@push('schema')
+@php
+    $helpItemList = [
+        ['name' => __('help.getting_started'), 'url' => route('articles')],
+        ['name' => __('help.geo_tools'), 'url' => route('articles', ['tag' => 'GEO'])],
+        ['name' => __('help.ai_insights'), 'url' => route('articles', ['tag' => 'AI'])],
+        ['name' => __('help.billing'), 'url' => route('contact')],
+    ];
+@endphp
+@include('front.partials.static-page-structured-data', [
+    'schemaPageType' => 'WebPage',
+    'schemaPageTitle' => __('help.title') . ' - ' . config('app.name'),
+    'schemaPageDescription' => __('help.description'),
+    'schemaPageUrl' => request()->url(),
+    'schemaLanguage' => app()->getLocale() === 'zh' ? 'zh-CN' : (app()->getLocale() === 'nl' ? 'nl-NL' : 'en'),
+    'schemaBreadcrumbs' => [
+        ['name' => app()->getLocale() === 'zh' ? '首页' : 'Home', 'item' => route('index')],
+        ['name' => __('help.title')],
+    ],
+    'schemaItemList' => $helpItemList,
+])
+@endpush
